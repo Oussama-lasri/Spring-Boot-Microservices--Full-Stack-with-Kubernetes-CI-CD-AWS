@@ -252,6 +252,8 @@ the place when deploy all the application
 **conclusion** : the service works as a service that enable communication inside or outside the cluster .
 Pods in Kubernetes are mortal and can be created or destroyed for reasons like scaling, updates, or node failures, causing their IP addresses to change frequently. A Service decouples the application's clients from the underlying Pods, providing a stable, persistent way to access the application without needing to track individual Pod IPs.
 
+![cluster](/images/cluster.png)
+
 #### ConfigMap & Secrets
 
 #### ConfigMap
@@ -357,6 +359,7 @@ Enables safe updates and scaling (Deployment)
 Efficient external exposure (Ingress + ALB)
 
 ---
+
 
 ## AWS
 
@@ -532,11 +535,11 @@ After successfully installing Chocolatey, you can use the following commands to 
         2. Once you're logged in, search for "RDS" in the AWS Management Console search bar or locate the "Database" category and click on "Aurora and RDS"
         ![RDS](images/DB/RDS_search.png)
         3. On the RDS dashboard, click on the "Create database" . then choose:
-        ![creation_method](images/db/creation_method.png)
+        ![creation_method](images/DB/creation_method.png)
         4. Choose Database Engine e.g.
-        ![engine](images/db/template.png)
+        ![engine](images/DB/template.png)
         5. Choose Template
-        ![template](images/db/template.png)
+        ![template](images/DB/template.png)
         6. DB Instance Configuration
             DB Instance Identifier → Unique name (e.g., my-db-instance)
             Master Username → Database admin username
@@ -548,7 +551,7 @@ After successfully installing Chocolatey, you can use the following commands to 
 
         8. Access and manage your RDS instance: Once the RDS instance is created successfully, you can access it using various methods like connecting through an application, using a database management tool, or connecting via the AWS Command Line Interface (CLI). The specific steps for accessing and managing your RDS instance will depend on the database engine you chose.
         eg : 
-        ![connect_way](connect_way.png)
+        ![connect_way](/connect_way.png)
 
 7. Mongodb Atlas ( NOSQL DB )
     - What is Mongo DB Atlas ?
@@ -561,8 +564,26 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     - How to setup MongoDB Atlas
 
-       
+        1.  Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
+        2. Deploy a Cluster :
+        `A "cluster" is the set of servers that will host your databases.`
+            From the Project Overview, click + Create to start the cluster creation
+            For better performance, choose a region close to your Kubernetes (K8s) cluster
+            ![cluster_creation](images/DB/mangoAtlas/cluster_creation.png)
+        3. Set Up Connection Security
+           ![connet_cluster1](images/DB/mangoAtlas/connet_cluster1.png)
+        - Add a Connection IP Address
+            Alternatively, you can allow access from anywhere (0.0.0.0/0), but this is not recommended for production environments.
+        -  Create a Database User
+
+        ![alt text](images/DB/mangoAtlas/cluster_created.png)
+
+        4. Connect with MongoDB Compass (GUI)
+        ![alt text](images/DB/mangoAtlas/mongo_compass.png)
+        - Replace <db_password> with your actual database user password.
+
+        u are Connected
 8. Manifest file creation
 
 - Deployment manifest file
@@ -579,7 +600,7 @@ After successfully installing Chocolatey, you can use the following commands to 
 
 ## Testing JUnit
 
-## Continuous Integration Continuous Deployment
+## Continuous Integration (CD) / Continuous Deployment (CD) Pipeline
 
 1. What is Continuous Integration (CI) ?
 2. What is Continuous Deployment (CD) ?

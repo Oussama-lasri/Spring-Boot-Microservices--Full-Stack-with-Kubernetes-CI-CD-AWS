@@ -567,21 +567,33 @@ After successfully installing Chocolatey, you can use the following commands to 
         1.  Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
         2. Deploy a Cluster :
-        `A "cluster" is the set of servers that will host your databases.`
+
+            `A "cluster" is the set of servers that will host your databases.`
+
             From the Project Overview, click + Create to start the cluster creation
+
             For better performance, choose a region close to your Kubernetes (K8s) cluster
+
             ![cluster_creation](images/DB/mangoAtlas/cluster_creation.png)
+
         3. Set Up Connection Security
+
            ![connet_cluster1](images/DB/mangoAtlas/connet_cluster1.png)
-        - Add a Connection IP Address
+
+        - Add a Connection IP Address :
+
             Alternatively, you can allow access from anywhere (0.0.0.0/0), but this is not recommended for production environments.
+
         -  Create a Database User
 
-        ![alt text](images/DB/mangoAtlas/cluster_created.png)
+            ![alt text](images/DB/mangoAtlas/cluster_created.png)
 
         4. Connect with MongoDB Compass (GUI)
-        ![alt text](images/DB/mangoAtlas/mongo_compass.png)
+            ![alt text](images/DB/mangoAtlas/connect_with_compass.png)
+        - Copy the connection string provided by MongoDB Atlas.
+            ![alt text](images/DB/mangoAtlas/mongo_compass.png)
         - Replace <db_password> with your actual database user password.
+        - Paste the connection string into MongoDB Compass to connect to your cluster.
 
         u are Connected
 8. Manifest file creation

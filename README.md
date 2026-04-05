@@ -631,7 +631,7 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     2. Manifest file creation
 
-        - **Deployment manifest file**
+        - **Deployment manifest file**  
             The Deployment manifest defines how your application pods are created and managed.
 
             *example* :
@@ -687,16 +687,136 @@ After successfully installing Chocolatey, you can use the following commands to 
             `env`  Environment variables injected into the container <br>
             `secretKeyRef`  Pulls a value from a Kubernetes Secret <br>
             `configMapKeyRef`  Pulls a value from a Kubernetes ConfigMap <br>
-                                        
-        - Service manifest file
-        - Configmap manifest file
-        - Secret manifest file
+
+        - **Service manifest file**  
+            The Service manifest exposes your application pods to network traffic.
+
+            *example*
+
+            ```yaml
+                apiVersion: v1
+                kind: Service
+                metadata:
+                name: my-app-service
+                spec:
+                selector:
+                    app: my-app
+                ports:
+                    - protocol: TCP
+                    port: 8080
+                    targetPort: 8080
+                type: ClusterIP
+            ```
+
+             `apiVersion`  API version (`v1`)  
+             `kind`  Type of object (`Service`)  
+             `selector`  Matches pods with the given label  
+             `port`  Port exposed by the Service  
+             `targetPort`  Port on the pod that receives the traffic  
+             `type`  Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`) 
 
 
-9. Kubectl
+        - Configmap manifest file  
+            The ConfigMap stores non-sensitive configuration data as key-value pairs.  
+            
+            ```yaml
+            apiVersion: v1
+            kind: ConfigMap
+            metadata:
+                name: my-configmap
+            data:
+                db-name: mydatabase
+                db-host: "jdbc:mysql://my-db-host.example.com:3306/mydatabase"
+                app-env: production
+            ```
 
-- What is Kubectl  ?
-- Important Kubectl commands 
+             `apiVersion`  API version (`v1`)  
+             `kind`  Type of object (`ConfigMap`)  
+             `data`  Key-value pairs of configuration values  
+             > **Note:** ConfigMaps are intended for non-sensitive data only. Do **not** store passwords or tokens here.
+
+        - Secret manifest file  
+        The Secret manifest stores sensitive data (e.g., passwords, tokens) as base64-encoded values.
+
+            ```yaml
+            apiVersion: v1
+            kind: Secret
+            metadata:
+            name: my-secret
+            type: Opaque
+            data:
+            db-username: YWRtaW4=       # base64 encoded value of "admin"
+            db-password: cGFzc3dvcmQ=   # base64 encoded value of "password"
+            ```
+         `apiVersion`  API version (`v1`)  
+         `kind`  Type of object (`Secret`)  
+         `type: Opaque`  Generic secret with base64-encoded data  
+         `data`  Key-value pairs where values are base64-encoded  
+ 
+        **Encoding a value to base64:**  
+
+            ```bash
+            echo -n "mypassword" | base64
+            # Output: bXlwYXNzd29yZA==
+            ```
+        > **Warning:** Base64 encoding is **not** encryption. Always use RBAC and restrict access to Secrets in production environments.
+        
+9. Kubectl  
+    Now that the manifest files are ready, we use `kubectl` to interact with the Kubernetes cluster.
+
+    - What is Kubectl  ?  
+        `kubectl` is the command-line tool that allows us to create, update, and manage resources defined in our manifest files.
+
+    - Important Kubectl commands
+        **Apply the manifests**
+ 
+        ```bash
+        # Applies all YAML files in the current directory to create or update resources in the cluster
+        kubectl apply -f .
+        ```
+        > **Why this order?** The Deployment depends on the ConfigMap and Secret being available first, so make sure all files are in the same directory.
+
+        **Verify everything is running** :
+
+            ```bash
+            # Lists all running pods in the cluster along with their current status
+            kubectl get pods
+            
+            # Lists all services in the cluster along with their details
+            kubectl get svc
+            
+            # Lists all config maps in the cluster along with their details
+            kubectl get configmap
+            
+            # Lists all secrets in the cluster along with their details
+            kubectl get secret
+            
+            # Lists all deployments in the cluster along with their details
+            kubectl get deployment
+            ```
+        **Inspect and troubleshoot**
+
+            ```bash
+            # Displays the logs of a specific pod identified by its name
+            kubectl logs <pod-name>
+            
+            # Executes the 'env' command inside a specific pod to display its environment variables
+            kubectl exec <pod-name> -- env
+            ```
+
+        **Delete the resources**
+    
+        ```bash
+        # Deletes a specific deployment identified by its name
+        kubectl delete deployment <deployment-name>
+        
+        # Deletes a specific service identified by its name
+        kubectl delete svc <svc-name>
+        ```
+    
+
+
+
 
 10. Load Balancer and AWS Load Balancer
 

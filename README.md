@@ -322,6 +322,7 @@ question : How to create Replicas sets in K8s ?
 ### Architecture of K8s
 
 Kubernetes consists of a Control Plane and Worker Nodes.
+![kubernetes-architecture](images/kubernetes-architecture.jpg)
 
 #### Control Plane
 
@@ -596,12 +597,45 @@ After successfully installing Chocolatey, you can use the following commands to 
         - Paste the connection string into MongoDB Compass to connect to your cluster.
 
         u are Connected
-8. Manifest file creation
 
-- Deployment manifest file
-- Service manifest file
-- Configmap manifest file
-- Secret manifest file
+8. Manifest file
+    1. Kubernetes manifest files
+        - What is kubernetes manifest file
+
+            A Kubernetes manifest file is a configuration file written in YAML or JSON that defines how Kubernetes should deploy and manage your application.
+
+            It acts like a blueprint, describing the desired state of your system.
+
+            A Kubernetes manifest file typically includes definitions for various Kubernetes objects, such as deployments, services, pods, replicaSets, configMaps, secret and more. These objects represent the building blocks of your application or system and define how they should be created, configured, and orchestrated within the Kubernetes cluster.
+
+        - Manifest file creation
+            - **Declarative Configuration** : Manifest files describe the desired state of your application and infrastructure in a Kubernetes cluster
+
+            - **Infrastructure as Code (IaC)** : Manifest files allow you to treat infrastructure configuration as code, enabling version control, review, and collaboration
+                - Real-World Flow (Simple)
+                    - Write YAML
+                    - Push to Git
+                    - Team reviews
+                    - CI/CD deploys to Kubernetes
+                    - Kubernetes ensures desired state
+                    ![alt text](images/REAL-WORLD-FLOW.png)
+            - **Automation and Orchestration**  : Kubernetes uses manifest files to automate and orchestrate deployment, scaling, updating, and deletion of resources
+
+            - **Reproducibility & Portability** : Manifest files allow you to recreate environments easily and move applications across different clusters or cloud providers
+
+            - **Collaboration & Sharing** : Manifest files serve as a common language for teams, facilitating sharing, collaboration, and best practice adoption.
+
+            - **Resource Management** : Manifest files define and manage various Kubernetes resources, specifying resource requirements, networking, storage, and other parameters.
+
+
+
+    2. Manifest file creation
+
+        - Deployment manifest file
+        - Service manifest file
+        - Configmap manifest file
+        - Secret manifest file
+
 
 9. Kubectl
 

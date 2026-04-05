@@ -631,7 +631,63 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     2. Manifest file creation
 
-        - Deployment manifest file
+        - **Deployment manifest file**
+            The Deployment manifest defines how your application pods are created and managed.
+
+            *example* :
+
+                ```yml
+                apiVersion: apps/v1                     
+                    kind: Deployment                    
+                    metadata:                       
+                    name: my-app
+                    labels:
+                        app: my-app
+                    spec:
+                    replicas: 2
+                    selector:
+                        matchLabels:
+                        app: my-app
+                    template:
+                        metadata:
+                        labels:
+                            app: my-app
+                        spec:
+                        containers:
+                            - name: my-app
+                            image: my-dockerhub/my-app:latest
+                            imagePullPolicy: Always
+                            ports:
+                                - containerPort: 8080
+                            env:
+                                - name: DB_USERNAME
+                                valueFrom:
+                                    secretKeyRef:
+                                    name: my-secret
+                                    key: db-username
+                                - name: DB_PASSWORD
+                                valueFrom:
+                                    secretKeyRef:
+                                    name: my-secret
+                                    key: db-password
+                                - name: DB_NAME
+                                valueFrom:
+                                    configMapKeyRef:
+                                    name: my-configmap
+                                    key: db-name
+                ```
+
+            `apiVersion`  API version of the Kubernetes object (`apps/v1`)<br>
+            `kind`  Type of object (`Deployment`)<br>
+            `replicas`  Number of pod instances to run <br>
+            `selector.matchLabels` | Identifies which pods belong to this Deployment<br>
+            `image`  Container image to pull and run <br>
+            `imagePullPolicy: Always`  Always pulls the latest image from <br>the registry <br>
+            `containerPort`  Port exposed inside the container <br>
+            `env`  Environment variables injected into the container <br>
+            `secretKeyRef`  Pulls a value from a Kubernetes Secret <br>
+            `configMapKeyRef`  Pulls a value from a Kubernetes ConfigMap <br>
+                                        
         - Service manifest file
         - Configmap manifest file
         - Secret manifest file

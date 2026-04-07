@@ -813,12 +813,180 @@ After successfully installing Chocolatey, you can use the following commands to 
         # Deletes a specific service identified by its name
         kubectl delete svc <svc-name>
         ```
-    
+
+10. Load Balancer
+
+    - What is Load Balancer ?
+        A load balancer is a networking device or software application that distributes and balances the incoming traffic among the servers to provide high availability, efficient utilization of servers and high performance.  
+        Works as a "traffic cop" routing client requests across all servers.  
+        ![load balancer](images/load_balancer.png)  
+        Highly used in cloud computing domains, data centers and large-scale web applications where traffic flow needs to be managed.
+
+    - Why Use a Load Balancer?
+        - **Improve Performance**  
+            Splits traffic = faster responses
+            Example:  API handles 10,000 users -> split across 5 servers -> each handles 2,000
+        - **High Availability (No Downtime)**  
+            If one server fails, others take over
+            Example: Server A down  traffic goes to B & C
+        - **Scalability (Grow Easily)**  
+            You can add more servers when traffic increases  
+            Load balancer automatically starts using them    
+            This is called **horizontal scaling**
+        > We use load balancing to distribute traffic across multiple servers to improve performance, ensure high availabil
+        ity, and enable scalability.  
+        Load balancing is essential in cloud and microservices architectures because it prevents single points of failure and allows systems to scale horizontally.
+
+11. AWS Load Balancer
+
+    In Amazon Web Services, load balancing is provided by Elastic Load Balancing (ELB), which offers multiple types designed for different use cases:
+
+    - types of LB
+        - Application Load Balancer (ALB)
+            - **Layer:** Layer 7 (Application Layer).
+            - **Core Function:** Best for HTTP/HTTPS traffic. It "understands" the request content.
+            - **Key Feature:** Content-based routing. It can route traffic based on URL paths (/api vs /static), hostnames, HTTP headers, or query strings
+            - **Use Case:** Microservices and container-based applications (Docker/EKS)  
+            ex : Smart police ,decides where cars go based on destination (URL, headers)
+
+        - Network Load Balancer (NLB)
+            - **Layer:** Layer 4 (Transport Layer)
+            - **Core Function:** Best for TCP, UDP, and TLS where extreme performance is required.
+            - **Key Feature:** Ultra-low latency and the ability to handle millions of requests per second. It provides a Static IP (or Elastic IP) per Availability Zone, which ALB does not.
+            - **Use Case:** Gaming, video streaming, and IoT application  
+            ex : Fast highway , moves cars super fast without inspecting them
+
+        - Gateway Load Balancer (GLB / GWLB)
+            - **Layer:** Layer 3 (Network Gateway) + Layer 4
+            - **Core Function:** Routes traffic to third-party(not built by AWS) virtual appliances (security tools)
+            - **Key Feature:** Transparent traffic inspection using GENEVE protocol without changing application architecture
+            - **Use Case:**
+                    Firewalls , Intrusion Detection/Prevention Systems (IDS/IPS) , Deep packet inspection tools  
+            ex : Security checkpoint , sends cars to scanners (firewalls)
+
+        - Classic Load Balancer (CLB)  
+            - **Layer:** Layer 4 (TCP/SSL) and Layer 7 (HTTP/HTTPS)
+            - **Core Function:** Legacy load balancing that bridges both the request and connection levels
+            - **Key Feature:** EC2-Classic support. It is the only load balancer that works within the deprecated EC2-Classic network. It lacks the modern routing features (like path-based or host-based routing) found in ALB.
+            - **Use Case:** Legacy applications built on the old AWS infrastructure that haven't been migrated to a VPC.  
+    > The OSI (Open Systems Interconnection) model is a conceptual 7-layer framework that standardizes network communication, enabling different systems to communicate  
+    ![osi](images/osi.png)
+
+    **Conclusion :**  
+    In Amazon Elastic Kubernetes Service (EKS), an AWS Load Balancer is a service that helps distribute incoming network traffic to the pods running in your EKS cluster. It acts as a gateway for external traffic to reach your Kubernetes services.  
+    Key points about AWS Load Balancer in EKS:
+    - Acts as an entry point for external traffic to access your applications running in EKS.
+    - Automatically detects and manages the availability of your pods, routing traffic to healthy instances.
+    - Provides load balancing capabilities, distributing traffic across multiple pods for improved performance and scalability.
+    - Offers different types of load balancers, depending on your requirements.
+    - Can be configured to route traffic based on various criteria, such as URL paths, hostnames, or TCP/UDP protocols.
+    - Supports SSL/TLS termination, health checks, and integration with other AWS services.
+    - Simplifies the management of traffic routing and load balancing for your Kubernetes services in the AWS cloud environment.
 
 
+12. ALB Controller and Ingress
+
+    In Kubernetes, "Ingress" and "ALB controller" (can be used as an Ingress Controller in Kubernetes.) are two related concepts that work together to provide external access to services running within a cluster. Here's the difference between them
+
+    - **Ingress** is an API object in Kubernetes that defines rules for routing external traffic to internal services. It acts as an entry point for external requests.
+
+    - An **ALB controller** is a component or a software application responsible for implementing the rules defined in the Ingress resource.
+
+    - Ingress allows you to define routing rules based on hostnames, paths, or other criteria to direct incoming traffic to the appropriate services within the cluster.
+
+    - ALB is a load balancer that can be used by an Ingress controller to achieve load balancing and routing functionality in an AWS environment.
+
+    - Steps to deploy ALB Controller
+
+    **Steps to install ALB Controller**
+    - Prerequisites  
+        EKS cluster created  
+        AWS CLI configured  
+        kubectl installed  
+        eksctl installed  
+    - Install Helm
+        ```bash
+        choco install kubernetes-helm
+        helm repo add eks https://aws.github.io/eks-charts
+        helm repo add jetstack https://charts.jetstack.io
+        helm repo update
+        ```
+
+    - step 1 : IAM Permissions
+        ```bash
+        curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+        ```
+        This IAM policy allows it to make calls to AWS APIs on your behalf.
+
+        To apply this policy on your AWS account run below command
+        ```bash
+        aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam_policy.json
+        ```
+        Below command is used to establish the required connection between the EKS cluster and IAM, enabling the ALB Controller to authenticate and perform necessary actions within the AWS environment.
+        ```bash
+            eksctl utils associate-iam-oidc-provider --region <your-region> --cluster <your-cluster-name> --approve
+        ```
+        ![oidc](oidc.png)
+
+        **conclusion** When deploying the AWS Load Balancer Controller (ALB Controller) on an Amazon EKS cluster, it requires an IAM OIDC provider to authenticate and authorize actions with AWS services. The ALB Controller uses IAM roles and policies to interact with other AWS services, such as creating and managing Application Load Balancers (ALBs). By associating the IAM OIDC provider with the EKS cluster, it allows the ALB Controller to assume IAM roles and access the necessary resources.
+
+        Create an IAM role. Create a Kubernetes service account named aws-load-balancer-controller in the kube-system namespace for the AWS Load Balancer Controller and annotate the Kubernetes service account with the name of the IAM role.Create IAM Role + Service Account (IRSA)
+        
+        Replace the values for cluster name, region code, and account ID
+        ```bash
+        eksctl create iamserviceaccount 
+        --cluster=<cluster-name> 
+        --namespace=kube-system 
+        --name=aws-load-balancer-controller 
+        --attach-policy-arn=arn:aws:iam::<AWS_ACCOUNT_ID>:policy/AWSLoadBalancerControllerIAMPolicy 
+        --override-existing-serviceaccounts 
+        --region <aws-region-code> 
+        --approve
+        ```
+        ![iamserviceaccount](iamserviceaccount.png)
+        Install cert-manager  
+         > Why Cert‑Manager Appears in Manifest Instructions but Not in Helm ?  
+            Helm installation: The AWS Load Balancer Controller Helm chart handles webhook certificates internally.  
+            No separate cert‑manager is needed for the controller when using Helm.  
+            That’s why the official Helm guide doesn’t mention cert‑manager the controller manages its own certificates automatically. 
+            Webhook certificates Automatically handled by Helm , Requires cert-manager if using full manifest 
+    - step 2 :  Install ALB Controller
+        Add the eks-charts Helm chart repository  
+        ```bash
+        helm repo add eks https://aws.github.io/eks-charts
+        helm repo update eks
+        ```
+
+        Install the ALB Controller
+        ```bash
+            helm install aws-load-balancer-controller eks/aws-load-balancer-controller 
+            -n kube-system 
+            --set clusterName=ur-cluster-name 
+            --set serviceAccount.create=false 
+            --set serviceAccount.name=aws-load-balancer-controller 
+            --set region=region-code 
+            --set vpcId=vpc-xxxxxxxx 
+            --version 1.14.0
+        ```
+        ![alt text](image-1.png)
+
+        The helm install command automatically installs the custom resource definitions (CRDs) for the controller. The helm upgrade command does not. If you use helm upgrade, you must manually install the CRDs. Run the following command to install the CRDs:  
+        ```bash
+            wget https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/crds.yaml
+            kubectl apply -f crds.yaml
+        ```
+
+        Verify that the controller is installed
+        ```bash
+        kubectl get deployment -n kube-system aws-load-balancer-controller
+        ```
+
+        ![aws-load-balancer-controller](aws-load-balancer-controller_created.png)
 
 
-10. Load Balancer and AWS Load Balancer
+    **guide**  
+    with helm <https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html>  
+    with manifestfile <https://docs.aws.amazon.com/eks/latest/userguide/lbc-manifest.html>
 
 ## Testing JUnit
 
@@ -837,3 +1005,18 @@ Understanding Jenkins file
 
 ### Argo CD
 
+
+
+
+
+
+
+
+
+
+
+
+
+API Gateway
+Security Layer
+Observability

@@ -1016,8 +1016,11 @@ graph LR;
   class client plain;
   class cluster cluster;
 ```
-***example***
-    ```yaml
+
+
+***example***  
+    ```yml
+
         apiVersion: networking.k8s.io/v1
         kind: Ingress
         metadata:
@@ -1071,7 +1074,7 @@ graph LR;
                         port:
                         number: 9093
     ```
-
+- explication   
     `alb.ingress.kubernetes.io/scheme: internet-facing` : Defines whether the ALB is public or private.
         `internet-facing` : accessible from the public internet.  
          `internal` :  accessible only within the VPC (private)

@@ -552,7 +552,7 @@ After successfully installing Chocolatey, you can use the following commands to 
 
         8. Access and manage your RDS instance: Once the RDS instance is created successfully, you can access it using various methods like connecting through an application, using a database management tool, or connecting via the AWS Command Line Interface (CLI). The specific steps for accessing and managing your RDS instance will depend on the database engine you chose.
         eg : 
-        ![connect_way](/connect_way.png)
+        ![connect_way](images/connect_way.png)
 
 7. Mongodb Atlas ( NOSQL DB )
     - What is Mongo DB Atlas ?
@@ -926,7 +926,7 @@ After successfully installing Chocolatey, you can use the following commands to 
         ```bash
             eksctl utils associate-iam-oidc-provider --region <your-region> --cluster <your-cluster-name> --approve
         ```
-        ![oidc](oidc.png)
+        ![oidc](images/oidc.png)
 
         **conclusion** When deploying the AWS Load Balancer Controller (ALB Controller) on an Amazon EKS cluster, it requires an IAM OIDC provider to authenticate and authorize actions with AWS services. The ALB Controller uses IAM roles and policies to interact with other AWS services, such as creating and managing Application Load Balancers (ALBs). By associating the IAM OIDC provider with the EKS cluster, it allows the ALB Controller to assume IAM roles and access the necessary resources.
 
@@ -943,7 +943,7 @@ After successfully installing Chocolatey, you can use the following commands to 
         --region <aws-region-code> 
         --approve
         ```
-        ![iamserviceaccount](iamserviceaccount.png)
+        ![iamserviceaccount](images/iamserviceaccount.png)
         Install cert-manager  
          > Why Cert‑Manager Appears in Manifest Instructions but Not in Helm ?  
             Helm installation: The AWS Load Balancer Controller Helm chart handles webhook certificates internally.  
@@ -968,7 +968,7 @@ After successfully installing Chocolatey, you can use the following commands to 
             --set vpcId=vpc-xxxxxxxx 
             --version 1.14.0
         ```
-        ![alt text](image-1.png)
+        ![alt text](images/install_ALBC.png)
 
         The helm install command automatically installs the custom resource definitions (CRDs) for the controller. The helm upgrade command does not. If you use helm upgrade, you must manually install the CRDs. Run the following command to install the CRDs:  
         ```bash
@@ -981,7 +981,7 @@ After successfully installing Chocolatey, you can use the following commands to 
         kubectl get deployment -n kube-system aws-load-balancer-controller
         ```
 
-        ![aws-load-balancer-controller](aws-load-balancer-controller_created.png)
+        ![aws-load-balancer-controller](images/aws-load-balancer-controller_created.png)
 
 
     **guide**  
@@ -1110,7 +1110,6 @@ graph LR;
     `alb.ingress.kubernetes.io/tags: Environment=prod, Project=food-delivery`: Attaches AWS resource tags to the ALB for billing tracking, cost allocation, and organizational management
 
     `alb.ingress.kubernetes.io/backend-protocol: HTTP`:  Defines the protocol used between the ALB and your pods (e.g., HTTP or HTTPS). Use HTTPS if your pods handle TLS internally (end-to-end encryption)
-
 
 ## Testing JUnit
 

@@ -1074,27 +1074,27 @@ graph LR;
                         port:
                         number: 9093
     ```
-- explication   
+- **explication**   
     `alb.ingress.kubernetes.io/scheme: internet-facing` : Defines whether the ALB is public or private.
-        `internet-facing` : accessible from the public internet.  
-         `internal` :  accessible only within the VPC (private)
+        - `internet-facing` : accessible from the public internet.  
+        - `internal` :  accessible only within the VPC (private)
     
-    `alb.ingress.kubernetes.io/target-type: ip` : efines how the ALB routes traffic to your pods.
-        `ip` : routes directly to the Pod IP (recommended with VPC CNI)
-        `instance` : routes to the Node IP, then kube-proxy forwards to the pod
+    `alb.ingress.kubernetes.io/target-type: ip` : defines how the ALB routes traffic to your pods.  
+        - `ip` : routes directly to the Pod IP (recommended with VPC CNI)  
+        - `instance` : routes to the Node IP, then kube-proxy forwards to the pod
 
     `spec.ingressClassName: alb` :  Links this Ingress resource to a specific Ingress Controller.
     Tells Kubernetes which controller should handle this Ingress (e.g., alb for AWS Load Balancer Controller, nginx for NGINX Controller).
 
-    `rules:` : Describes the routing rules for all incoming HTTP traffic.  
-        - Each rule maps a URL path to a backend Service and port
-        - path: `/restaurant` ->forwards to `restaurant-servic`e on port `9091`
+    `rules:` : Describes the routing rules for all incoming HTTP traffic.    
+        - Each rule maps a URL path to a backend Service and port  
+        - path: `/restaurant` ->forwards to `restaurant-servic`e on port `9091`  
 
-    `pathType: Prefix` : Controls how the path is matched against incoming URLs 
-        `Prefix` matches any URL starting with that path (e.g., /foo/123 matches /foo)  
-        `Exact`  matches only the exact path (e.g., /fop does NOT match /foo/123)
+    `pathType: Prefix` : Controls how the path is matched against incoming URLs  
+        - `Prefix` matches any URL starting with that path (e.g., /foo/123 matches /foo)  
+        - `Exact`  matches only the exact path (e.g., /fop does NOT match /foo/123)
     
- - Additional Production Annotations  
+ - **Additional Production Annotations**  
     `alb.ingress.kubernetes.io/group.name: my-group-name` : Groups multiple Ingress resources to share a single ALB, reducing cost and resource usage
 
     `alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'` : Specifies which ports the ALB listens on. Enables both HTTP (80) and HTTPS (443) traffic entry points

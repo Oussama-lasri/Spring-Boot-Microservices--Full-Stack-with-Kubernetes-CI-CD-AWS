@@ -1016,7 +1016,6 @@ graph LR;
   class client plain;
   class cluster cluster;
 ```
-
 ***example***
     ```yaml
         apiVersion: networking.k8s.io/v1
@@ -1063,7 +1062,6 @@ graph LR;
                         name: order-service
                         port:
                         number: 9094
-
 
                 - path: /user
                     pathType: Prefix

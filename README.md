@@ -990,7 +990,15 @@ After successfully installing Chocolatey, you can use the following commands to 
 
 13. Ingress
 
-
+    - What is Ingress?
+        Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. Traffic routing is controlled by rules defined on the Ingress resource.  
+        In Kubernetes, an Ingress is an API object that manages external access to services inside the cluster.  
+        It acts as the “Front Door” of your application.  
+        Ingress provides:  
+            * Centralized routing  
+            * Single entry point  
+            * Clean architecture for microservices 
+    - Flow
 
 ```mermaid
 graph LR;
@@ -1007,8 +1015,100 @@ graph LR;
   class ingress,service,pod1,pod2 k8s;
   class client plain;
   class cluster cluster;
+```
+
+***example***
+    ```yaml
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+        name: aws-ingress
+        annotations:
+            # kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/scheme: internet-facing
+            alb.ingress.kubernetes.io/target-type: ip
+        spec:
+        ingressClassName: alb
+        rules:
+            - http:
+                paths:
+                #   - path: /
+                #     pathType: Prefix
+                #     backend:
+                #       service:
+                #         name: angular-service
+                #         port:
+                #           number: 80
+
+                - path: /restaurant
+                    pathType: Prefix
+                    backend:
+                    service:
+                        name: restaurant-service
+                        port:
+                        number: 9091
+
+                - path: /foodCatalogue
+                    pathType: Prefix
+                    backend:
+                    service:
+                        name: foodcatalogue-service
+                        port:
+                        number: 9098
+
+                - path: /order
+                    pathType: Prefix
+                    backend:
+                    service:
+                        name: order-service
+                        port:
+                        number: 9094
 
 
+                - path: /user
+                    pathType: Prefix
+                    backend:
+                    service:
+                        name: user-service
+                        port:
+                        number: 9093
+    ```
+
+    `alb.ingress.kubernetes.io/scheme: internet-facing` : Defines whether the ALB is public or private.
+        `internet-facing` : accessible from the public internet.  
+         `internal` :  accessible only within the VPC (private)
+    
+    `alb.ingress.kubernetes.io/target-type: ip` : efines how the ALB routes traffic to your pods.
+        `ip` : routes directly to the Pod IP (recommended with VPC CNI)
+        `instance` : routes to the Node IP, then kube-proxy forwards to the pod
+
+    `spec.ingressClassName: alb` :  Links this Ingress resource to a specific Ingress Controller.
+    Tells Kubernetes which controller should handle this Ingress (e.g., alb for AWS Load Balancer Controller, nginx for NGINX Controller).
+
+    `rules:` : Describes the routing rules for all incoming HTTP traffic.  
+        - Each rule maps a URL path to a backend Service and port
+        - path: `/restaurant` ->forwards to `restaurant-servic`e on port `9091`
+
+    `pathType: Prefix` : Controls how the path is matched against incoming URLs 
+        `Prefix` matches any URL starting with that path (e.g., /foo/123 matches /foo)  
+        `Exact`  matches only the exact path (e.g., /fop does NOT match /foo/123)
+    
+ - Additional Production Annotations  
+    `alb.ingress.kubernetes.io/group.name: my-group-name` : Groups multiple Ingress resources to share a single ALB, reducing cost and resource usage
+
+    `alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'` : Specifies which ports the ALB listens on. Enables both HTTP (80) and HTTPS (443) traffic entry points
+
+    `alb.ingress.kubernetes.io/ssl-redirect: '443'` : Automatically redirects all HTTP traffic to HTTPS, enforcing a secure connection for all users
+
+    `alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:<region>:<account-id>:certificate/<id>` :  Attaches an SSL/TLS certificate from AWS Certificate Manager (ACM) to the ALB, enabling HTTPS termination
+
+    `alb.ingress.kubernetes.io/healthcheck-path: /health` : Sets the health check endpoint the ALB uses to verify your pods are alive and ready (e.g., /health or /actuator/health
+
+    `alb.ingress.kubernetes.io/subnets: subnet-xxx, subnet-yyy` : Specifies the subnets where the ALB is deployed. Critical for production — must include subnets across multiple Availability Zones for high availability
+
+    `alb.ingress.kubernetes.io/tags: Environment=prod, Project=food-delivery`: Attaches AWS resource tags to the ALB for billing tracking, cost allocation, and organizational management
+
+    `alb.ingress.kubernetes.io/backend-protocol: HTTP`:  Defines the protocol used between the ALB and your pods (e.g., HTTP or HTTPS). Use HTTPS if your pods handle TLS internally (end-to-end encryption)
 
 
 ## Testing JUnit

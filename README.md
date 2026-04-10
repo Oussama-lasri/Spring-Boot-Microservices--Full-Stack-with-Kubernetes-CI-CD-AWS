@@ -1111,7 +1111,128 @@ graph LR;
 
     `alb.ingress.kubernetes.io/backend-protocol: HTTP`:  Defines the protocol used between the ALB and your pods (e.g., HTTP or HTTPS). Use HTTPS if your pods handle TLS internally (end-to-end encryption)
 
-## Testing JUnit
+---
+
+## Testing
+
+### what is testing ?
+
+Testing is the process of verifying that your code works as expected.
+It helps you:
+
+- test their code to make sure it works correctly
+- Catch bugs early
+- Ensure correctness
+- Prevent regressions (breaking existing features)
+- Improve code quality
+
+### what is JUnit ?
+
+JUnit is a testing framework  
+key concept : 
+
+- **Unit Testing:** JUnit allows developers to test individual parts of their code to ensure they work as intended
+
+- **Code Quality:** JUnit helps improve code quality by catching bugs early and ensuring reliability
+
+- **Refactoring:** JUnit provides a safety net when making changes to existing code, making sure nothing breaks
+
+### Best Practices
+
+- **test Naming Convention**Test names should be clear and descriptive, explaining what the test does and what result is expected ex : `shouldReturnTotalPrice_whenItemsAreValid()`
+
+- **Test Structure:** Follow the Arrange-Act-Assert (AAA) pattern in your tests ex :
+    ```java
+    @Test
+    void shouldAddTwoNumbers() {
+        // Arrange
+        int a = 2;
+        int b = 3;
+
+        // Act
+        int result = a + b;
+
+        // Assert
+        assertEquals(5, result);
+    }
+    ```
+
+
+- **Test Independence:** Each test should be independent and rely on the state or outcome of other tests. This ensures that tests can be executed individually without interference ex : Each test creates its own data
+
+- **Test Coverage:** Ensure your tests cover all critical paths including edge cases, error handling, and boundary conditions 
+Make sure tests cover:  
+    Normal cases  
+    Edge cases (empty input, null)  
+    Error cases (exceptions)  
+    Boundary values  
+
+- **Test Data:** Use appropriate and representative test data to cover a wide range of scenarios
+
+- **Test Assertions:** Use relevant assertions to verify expected results. JUnit provides various assertion methods (e.g.,assertEquals(), assertTrue())
+
+### What is Mocking?
+
+Mocking is a testing technique where you create fake (mock) objects that simulate the behavior of real objects
+
+Instead of using real dependencies (like a database, API, or external service), you use mocks to control and predict behavior during testing
+
+Mocking = replacing real dependencies with controlled fake ones
+
+A method invoked using mocked reference does not execute the actual method body defined in the class file, rather the method behavior is configured using when(...).thenReturn(...) methods  
+`when(userRepository.findById(1)).thenReturn(new User("test1"));`
+
+### What is Mockito in JUnit
+
+Mockito is a java based mocking framework, used in conjunction with other testing frameworks such as JUnit and TestNG. It internally uses Java Reflection API and allows to create objects of a service. A mock object returns a dummy data and avoids external dependencies. It simplifies the development of tests by mocking external dependencies and apply the mocks into the code under test
+
+> **Note:** If using Spring Boot, you don't need to add Mockito manually it is already included `spring-boot-starter-test`.
+
+#### What is @Mock and @InjectMocks?
+
+- **@Mock:** Creates a fake (mock) instance of a dependency that is not
+  available in the test environment
+
+- **@InjectMocks:** Creates a real instance of the class being tested and
+  automatically injects all `@Mock` dependencies into it
+
+- **when(...).thenReturn(...):** Defines what a mock should return when
+  its method is called during the test
+
+Example:
+
+```java
+@Mock
+UserRepository userRepository;  // fake dependency
+
+@InjectMocks
+UserService userService;        // real class being tested,
+                                // userRepository injected into it
+
+// define mock behavior
+when(userRepository.findById(1)).thenReturn(new User("John"));
+```
+
+#### Why do you need Mocking at first place?
+
+Common targets for mocking:
+
+- **Database Connections:** Database queries can be slow, taking 10s 20s
+  or more seconds to execute which slows down your test suite
+
+- **Slow Classes:** Any class that takes too long to execute and slows
+  down testing
+
+- **Classes with Side Effects:** Such as services that send emails to
+  clients  you don't want real emails sent during testing
+
+- **Components Under Development:** If the class you are testing depends
+  on another component that is not yet finished mocking allows you to
+  test without waiting for it to be completed
+
+- **Web Services / External Resources:** External services can be slow
+  or unavailable, which directly impacts your tests and can break your
+  CI/CD pipeline due to a failure outside your control
 
 ## Continuous Integration (CD) / Continuous Deployment (CD) Pipeline
 

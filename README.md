@@ -1237,6 +1237,60 @@ Common targets for mocking:
 ## Continuous Integration (CD) / Continuous Deployment (CD) Pipeline
 
 1. What is Continuous Integration (CI) ?
+
+Continuous Integration (CI) is a software development practice where developers frequently merge their code into a shared repository.
+Each change is automatically built and tested to detect issues early
+
+The main goal of CI is to improve collaboration, provide fast feedback, and ensure the code is always ready for deployment
+
+- **Scenario**  
+A team is working on a web application with multiple modules. Each developer works on a different part of the project
+
+With CI:
+
+- Developers regularly commit their code to a shared repository.
+- The CI server automatically triggers a build when new code is pushed.
+- The build process includes:
+    - Compiling the code
+    - Running automated tests
+    - Performing code quality checks
+- If errors are found:
+    - The CI system notifies developers immediately
+    - Developers fix the issues quickly
+- After fixing:
+    - The system rebuilds and retests the application
+- If everything passes:
+    - The code is considered stable and ready for deployment
+
+chart :  
+```mermaid
+flowchart TD
+
+A[Developers Work on Different Modules] --> B[Commit Code to Shared Repository]
+
+B --> C[CI Server Detects New Commit]
+
+C --> D[Trigger Build Process]
+
+D --> E[Compile Code]
+D --> F[Run Automated Tests]
+D --> G[Static Code Analysis]
+
+E --> H{Any Issues Found?}
+F --> H
+G --> H
+
+H -- Yes --> I[Notify Developers]
+I --> J[Fix Issues]
+J --> B
+
+H -- No --> K[Build Successful]
+
+K --> L[Ready for Deployment]
+
+L --> M[Team Confident to Release]
+```
+
 2. What is Continuous Deployment (CD) ?
 
 ### Sonarqube

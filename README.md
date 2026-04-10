@@ -1188,7 +1188,7 @@ Mockito is a java based mocking framework, used in conjunction with other testin
 
 > **Note:** If using Spring Boot, you don't need to add Mockito manually it is already included `spring-boot-starter-test`.
 
-#### What is @Mock and @InjectMocks?
+#### **What is @Mock and @InjectMocks?**
 
 - **@Mock:** Creates a fake (mock) instance of a dependency that is not
   available in the test environment
@@ -1210,7 +1210,7 @@ UserService userService;        // real class being tested,
                                 // userRepository injected into it
 
 // define mock behavior
-when(userRepository.findById(1)).thenReturn(new User("John"));
+when(userRepository.findById(1)).thenReturn(new User("test1"));
 ```
 
 #### Why do you need Mocking at first place?

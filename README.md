@@ -76,7 +76,7 @@ with Web MVC Architecture :
 
 **Repo:** [food-delivery-eureka-service](https://github.com/Oussama-lasri/food-delivery-eureka-service) ·
 
-Central discovery server. All microservices register here on startup and use Eureka to locate each other — no hardcoded URLs.
+Central discovery server. All microservices register here on startup and use Eureka to locate each other no hardcoded URLs.
 
 ###  User Info Service
 
@@ -117,7 +117,7 @@ Complete Restaurant Details
 
 **Repo:** [food-delivery-restaurant-listing-service](https://github.com/Oussama-lasri/food-delivery-restaurant-listing-service) ·
 
-Handles restaurant data — listing, filtering, and details.
+Handles restaurant data listing, filtering, and details.
 
 #### Tech-stack used
 
@@ -190,7 +190,7 @@ For example, to activate the development profile, you can set `spring.profiles.a
 
 ### How profiling works in Spring Boot
 
-Configuration Files: Spring Boot allows you to define multiple configuration files, each associated with a specific profile. These files are typically named a`pplication-{profile}.properties` or `application-{profile}.yml`, where {profile} is the name of the profile.
+Configuration Files: Spring Boot allows you to define multiple configuration files, each associated with a specific profile. These files are typically named a`pplication-{profile}.properties` or `application-{profile}.yml`, where {profile} is the name of the profile.  ![alt text](images/profiling.png)
 
 Application Properties: Inside each profile-specific configuration file, you can specify different properties based on your requirements. These properties can include database connection details, logging settings, cache configurations, and any other application-specific configurations.
 
@@ -198,6 +198,9 @@ Activating Profiles: You can activate a specific profile by setting the `spring.
 For example, to activate the development profile, you can set `spring.profiles.active=development`
 
 e.g. :
+```
+
+```
 
 
 ## Kubernetes
@@ -246,7 +249,7 @@ the place when deploy all the application
 - **NodePort :** Define your service with a **type: `NodePort`** in its Service specification.
     This type exposes the service on a specific port of each cluster node's IP address. It makes the service accessible from outside the cluster by using the node's IP address and the assigned NodePort.
 
-- **Note**: This approach is typically used for development or testing purposes and may not be suitable for production deployments.
+    - **Note**: This approach is typically used for development or testing purposes and may not be suitable for production deployments.
 - **Load Balancer:** This type provisions an external load balancer (e.g., from a cloud provider) that directs traffic to the service. It automatically assigns an external IP address, making the service accessible from outside the cluster.
 
 **conclusion** : the service works as a service that enable communication inside or outside the cluster .
@@ -268,7 +271,17 @@ then pull that new image in your pod and restart the whole thing
 easier to manage and update the configuration independently of the container images.
 It promotes flexibility, maintainability, and portability in a Kubernetes environment.
 
-e.g. :
+e.g. :  
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_COLOR: "blue"
+  LOG_LEVEL: "info"
+```
 
 #### Secrets
 
@@ -280,6 +293,45 @@ tokens, or certificates. Secrets provide a way to securely store and distribute 
 data to containers running in pods.
 
 e.g. :
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-db-secret
+type: Opaque
+stringData:
+  DB_PASSWORD: "my-secure-password"
+```
+
+#### Usage in a Pod
+
+ inject these values into a container as environment variables
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  containers:
+    - name: app-container
+      image: nginx
+      env:
+        # From ConfigMap
+        - name: UI_COLOR
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_COLOR
+        # From Secret
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-db-secret
+              key: DB_PASSWORD
+
+```
 
 #### volumes
 
@@ -1361,12 +1413,14 @@ Jenkins is a popular open-source automation tool that helps automate various tas
     By continuously running tests and validations, Jenkins helps:  
         - Detect bugs early  
         - Enforce coding standards  
-        - Maintain stable production releases  
+        - Maintain stable production releases
+
 - **Conclusion** : Jenkins automates the repetitive tasks of a software pipeline building, testing, and integrating code. It gives developers immediate feedback on every change, catches bugs early, and ensures only stable code reaches production.
 
 2. Jenkins File
 3. Understanding Jenkins file
 
+### 
 ### Argo CD
 
 

@@ -347,13 +347,39 @@ spec:
 
 #### Replicas Sets
 
-question : How to create Replicas sets in K8s ?
+question : How to create ReplicaSet in K8s ?
 
-- For High available , fault tolerance and load balancing we need replicate sets for same pod
+- For High available , fault tolerance and load balancing we need replicateSet for same pod
 
 - So if I need 3 Replica set of each application will u create 3 pods manually ?.
 
-- Answer is NO !! we never work at POD level. We work at Deployment level.
+- Answer is NO !! we never work at POD level. We work at Deployment level
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  # Modify this to change the number of pods
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: php-redis
+        image: gcr.io/google_samples/gb-frontend:v3
+```
+
+- note :  but Deployments are a higher-level, recommended abstraction
 
 #### deployments
 
@@ -363,6 +389,48 @@ question : How to create Replicas sets in K8s ?
 
 - Deleting Deployment will delete Pods, replica sets but will not delete services, ConfigMaps, Secrets, and any associated persistent volumes.
 
+```yaml
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: foodcatalogueapp
+  labels:
+    app: foodcatalogueapp
+spec:
+  replicas: 1 # Number of replicas that will be created for this deployment
+  selector:
+    matchLabels:
+      app: foodcatalogueapp
+  template:
+    metadata:
+      labels:
+        app: foodcatalogueapp
+    spec:
+      containers:
+        - name: foodcatalogueapp
+          image: ousamalasri/food-catalogue-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9098 #
+
+          env: # Environment variables supplied to the Pod
+            - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
+              valueFrom: # Get the value of environment variable from kubernetes secrets
+                secretKeyRef:
+                  name: secret
+                  key: mysql-username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: mysql-password
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap
+                  key: foodcataloguedb_url
+```
+
 #### statefulSets
 
 - `StatefulSet` in Kubernetes is a way to manage applications that need to maintain their identity and persist data, such as databases.
@@ -371,6 +439,35 @@ question : How to create Replicas sets in K8s ?
 
 - `StatefulSets` provide a way to deploy, scale, and update these stateful applications
 
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eureka
+spec:
+  serviceName: eureka-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka
+  template:
+    metadata:
+      labels:
+        app: eureka
+    spec:
+      containers:
+        - name: eureka
+          image: ousamalasri/eureka-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8761
+          env:
+            - name: EUREKA_SERVER_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap
+                  key: eureka_service_address
+```
 ### Architecture of K8s
 
 Kubernetes consists of a Control Plane and Worker Nodes.

@@ -1606,18 +1606,29 @@ pipeline {
 
 ### Argo CD
 
+1. what is argoCD ?
+Argo CD is an open-source Continuous Delivery (CD) tool designed for Kubernetes that follows the GitOps approach. It automatically deploys and manages applications in a Kubernetes cluster by using configuration files (manifests) stored in a Git repository as the single source of truth.
 
+It continuously compares the desired state in Git with the actual state in the cluster and keeps them in sync.
 
+2. Why  Argo CD ?
 
+Argo CD is used because it simplifies and automates Kubernetes deployments by:
 
+- Automating application deployment without manual intervention
+- Ensuring consistency between Git configuration and Kubernetes cluster
+- Providing continuous synchronization (GitOps model)
+- Detecting configuration drift and fixing it automatically
+- Allowing easy rollback to previous versions if something goes wrong
+- Improving reliability, visibility, and control over deployments
 
+### Getting Started: End-to-End CI/CD + GitOps Flow
 
-
-
-
-
+**CI/CD Pipeline**
+![ci_cd_pipeline](images/ci_cd_pipeline.png)
 
 ---
+
 API Gateway
 Security Layer
 Observability

@@ -1624,8 +1624,86 @@ Argo CD is used because it simplifies and automates Kubernetes deployments by:
 
 ### Getting Started: End-to-End CI/CD + GitOps Flow
 
-**CI/CD Pipeline**
+**CI/CD Pipeline:**
+
 ![ci_cd_pipeline](images/ci_cd_pipeline.png)
+
+1. Infrastructure and Installation
+
+    - **Create an EC2 instance**
+
+        - you can choose the AMI that you need (Amazon machine image) : An AMI contains the operating system OS , application server, and applications for your instance.
+
+        - then choose your instance type you can choose what you want (minimum : t2.medium )
+
+        - reate the key pair (.pem) and save it in local machine
+
+        - in the Network settings select the options of http and https . Add rules to allow specific traffic to reach your instance.
+
+        - then launch the instance  
+
+        - then add TCP  Inbounded rules for jenkins 8080 and sonarQube 9000
+
+    - **Connect to EC2**
+
+    - **System Preparation**
+
+        - install Maven
+        ```bash
+        sudo apt install maven -y
+        mvn -version
+        ```
+
+        - install Open JDK:
+            ```bash
+            sudo apt install openjdk-17-jdk -y
+            java -version
+            ```
+
+        - install docker
+            ```bash
+            sudo yum update -y
+            sudo yum install -y docker 
+            sudo service docker start 
+            sudo chkconfig docker on # This command configures the docker service to start automatically on system boot
+            ```
+            Overall, these commands update the system, install Docker , start the docker service, and set it to automatically start to system boot , allowing you to work with docker and run containerized app on your linux system
+
+        - install nodejs
+            ```bash
+            sudo apt install nodejs npm -y
+            node -v
+            npm -v
+            ```
+
+        - install git
+            ```bash
+            sudo apt install git -y
+            git --version 
+            ```
+
+        - Install sonarQube
+
+            now we install and run sonarQube using docker :
+
+            ```bash
+            sudo  docker run -d -p 9000:9000 — name sonarqube sonarqube
+            sudo  docker logs -f sonarqube # to check the logs 
+            ```
+
+        - Install Jenkins
+            ```bash
+            sudo wget -O /etc/yum.repos.d/jenkins.repo \https://pkg.jenkins.io/redhat-stable/jenkins.repo
+            sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+            sudo yum install jenkins -y
+            sudo systemctl enable jenkins
+            sudo systemctl start jenkins
+            ```
+
+
+2. Continuous Integration (CI)
+3. Continuous Deployment (CD)
+
 
 ---
 

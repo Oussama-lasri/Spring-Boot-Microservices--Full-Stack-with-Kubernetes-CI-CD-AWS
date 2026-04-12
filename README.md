@@ -468,6 +468,7 @@ spec:
                   name: configmap
                   key: eureka_service_address
 ```
+
 ### Architecture of K8s
 
 Kubernetes consists of a Control Plane and Worker Nodes.
@@ -498,8 +499,7 @@ Each service is deployed with:
 - `Service` — ClusterIP for internal communication, LoadBalancer/NodePort for external
 - `ConfigMap` — non-sensitive configuration
 - `Secret` — sensitive values (DB passwords, JWT secret)
-- `ingress` - To understand how traffic gets from the internet to your application, you have to look at Ingress as the "Front Door" of your cluster (for more details in `ALB Controller and Ingress` section we talk more).
-
+- `ingress` - To understand how traffic gets from the internet to your application, you have to look at Ingress as the "Front Door" of your cluster (for more details in `ALB Controller and Ingress` section we talk more).  
 Acts as the "Front Door" of the cluster for external traffic coming from the internet.
 
 **Why this combination?**
@@ -1460,6 +1460,8 @@ Its main goal is to ensure reliable, maintainable, and secure code throughout th
 - Team Collaboration
     - Provides a shared dashboard where the team can review and improve code together.
 
+---
+
 ### CI using Jenkins
 
 1. What is Jenkins ?
@@ -1515,9 +1517,93 @@ Jenkins is a popular open-source automation tool that helps automate various tas
 - **Conclusion** : Jenkins automates the repetitive tasks of a software pipeline building, testing, and integrating code. It gives developers immediate feedback on every change, catches bugs early, and ensures only stable code reaches production.
 
 2. Jenkins File
+
+```groovy
+pipeline {
+    agent any   // run on any Jenkins machine
+
+    environment {
+        VERSION = "1.0"
+        DOCKERHUB_CREDENTIALS = "docker-creds"
+    }
+
+    tools {
+        maven "Maven"   // use Maven installed in Jenkins
+    }
+
+    stages {
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('SonarQube') {
+            steps {
+                sh 'mvn clean install sonar:sonar'
+            }
+        }
+
+        stage('Check Coverage') {
+            steps {
+                script {
+                    echo "Checking coverage..."
+                    // simplified (no curl for now)
+                    def coverage = 80
+
+                    if (coverage < 70) {
+                        error "Coverage too low!"
+                    }
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Update GitOps') {
+            steps {
+                echo "Updating image tag in Git repo..."
+                // simplified version (no real git commands)
+            }
+        }
+    }
+}
+```
+
 3. Understanding Jenkins file
 
-### 
+- The `pipeline` keyword defines the start of the Jenkins pipeline. It contains all the steps executed by Jenkins
+
+- `agent` any: Specifies that the pipeline can run on any available agent in the Jenkins environment
+
+- The `environment` section defines variables used across the pipeline
+
+- The `tools` section specifies required tools
+
+- `stages`: Contains a collection of stages that represent the different steps of the pipeline.
+
+- `stage` is used to define each step in the pipeline, where every step performs a specific task in the CI/CD process such as:
+    - Building the application
+    - Running tests
+    - Analyzing code quality
+    - Checking code coverage
+    - Deploying the application
+    - Security scanning
+    - Packaging the application
+
+---
+
 ### Argo CD
 
 
@@ -1531,7 +1617,7 @@ Jenkins is a popular open-source automation tool that helps automate various tas
 
 
 
-
+---
 API Gateway
 Security Layer
 Observability

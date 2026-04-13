@@ -1701,8 +1701,81 @@ Argo CD is used because it simplifies and automates Kubernetes deployments by:
             ```
 
 
-2. Continuous Integration (CI)
-3. Continuous Deployment (CD)
+2. Continuous Integration (CI)  
+` “Build + Test + Analyze code” `
+This part = runs on every commit
+
+- **SonarQube**
+    we installed sonar now run sonarQube :
+
+    ```bash
+    sudo  docker run -d -p 9000:9000 —name sonarqube sonarqube
+    sudo  docker logs -f sonarqube # to check the logs
+    ```
+    **hits:** you can access sonarQube from UI Dashboard using public Ip address of EC2 instance your-ec2-public-ip:9000 ex  : 12.345.67.89:9000
+
+    Default credentials:  
+        Username: admin   
+        Password: admin
+
+
+    Generate token .
+    token act as Access ticket that allows Jenkins to send code analysis results to SonarQube  
+    click on user icon -> my account -> security and create new token 
+    ![create_new_token](images/sonarQube/create_new_token.png)
+    to generate token remplire the this section
+    ![generate_token.](images/sonarQube/generate_token.png)
+
+    copy the token and save it for jenkins .won’t see it again
+
+    then go to quality Gates for create  sonar rules:  
+    add the following conditions  
+        coverage :  
+            ![coverage](images/sonarQube/coverage.png)  
+         line coverage :  
+            ![line coverage](images/sonarQube/line_coverage.png)
+
+    Now put following  plugin inside the `plugins` section of your `pom.xml` :  
+    ```xml
+    <!-- jacoco -->
+    <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.10</version>
+    <executions>
+    <execution>
+    <goals>
+        <goal>prepare-agent</goal>
+    </goals>
+    </execution>
+    <execution>
+    <id>report</id>
+    <phase>test</phase>
+    <goals>
+        <goal>report</goal>
+    </goals>
+    </execution>
+    </executions>
+    </plugin>
+    ```
+    This plugin:  
+        Runs with your tests  
+        Generates coverage reports  
+        Sends data to SonarQube
+
+    To run sonar in local and push report in sonar dashboard : 
+    `mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://replace-with-your-proper-EC2-instance-URL:9000/ -Dsonar.token=SonareQube-token `
+   
+   This command is used within Jenkins to run the build, execute tests, and send the code analysis results to SonarQube. After execution, you can view important metrics such as code coverage, bugs, code smells, and duplications directly in the SonarQube dashboard, accessible via your EC2 public IP (e.g., http://<EC2-IP>:9000). With the proper configuration of the JaCoCo plugin, a coverage report is automatically generated during test execution and integrated into SonarQube, allowing detailed visualization of code quality. Initially, this command is run locally to validate that tests and analysis are working correctly, and the results are verified in the SonarQube UI. Once confirmed, the same process is integrated into a CI/CD pipeline to enable full automation of code quality checks on every commit.
+
+- **Jenkins**
+    first of all check the status of jenkins 
+        `sudo systemctl status jenkins `
+
+
+
+3. Continuous Deployment (CD)  
+`“Deploy application automatically”`
 
 
 ---

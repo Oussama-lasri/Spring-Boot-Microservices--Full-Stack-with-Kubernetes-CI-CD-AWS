@@ -57,8 +57,6 @@ Within this microservice architecture, the entire functionality is split in inde
 
 ## Repository Structure
 
-
-
 ---
 
 ## Microservices
@@ -72,13 +70,13 @@ with Web MVC Architecture :
 - Entity
 - DTO layer
 
-###  Eureka Service Registry
+### Eureka Service Registry
 
 **Repo:** [food-delivery-eureka-service](https://github.com/Oussama-lasri/food-delivery-eureka-service) ·
 
 Central discovery server. All microservices register here on startup and use Eureka to locate each other no hardcoded URLs.
 
-###  User Info Service
+### User Info Service
 
 **Repo:** [food-delivery-user-info-service](https://github.com/Oussama-lasri/food-delivery-user-info-service) ·
 Manages user profiles and personal information.
@@ -94,7 +92,7 @@ Manages user profiles and personal information.
 - Eureka Client
 - mapstruct
 
-###  Food Catalogue Service
+### Food Catalogue Service
 
 **Repo:** [food-delivery-food-catalogue-service](https://github.com/Oussama-lasri/food-delivery-food-catalogue-service) ·
 
@@ -113,7 +111,7 @@ Complete Restaurant Details
 - Eureka Client
 - mapstruct
 
-###  Restaurant Listing Service
+### Restaurant Listing Service
 
 **Repo:** [food-delivery-restaurant-listing-service](https://github.com/Oussama-lasri/food-delivery-restaurant-listing-service) ·
 
@@ -130,7 +128,7 @@ Handles restaurant data listing, filtering, and details.
 - Eureka Client
 - mapstruct
 
-###  Restaurant Order Service
+### Restaurant Order Service
 
 **Repo:** [food-delivery-order-service](https://github.com/Oussama-lasri/food-delivery-order-service) ·
 
@@ -173,7 +171,7 @@ COPY target/*.jar /opt/app.jar
 ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
 ```
 
-**Build and Push Image** : 
+**Build and Push Image** :
 Build image : `docker build -t user-name/app-name:0.0.1 .`
 Push image to DockerHub : `docker push user-name/app-name:0.0.1`
 
@@ -198,10 +196,10 @@ Activating Profiles: You can activate a specific profile by setting the `spring.
 For example, to activate the development profile, you can set `spring.profiles.active=development`
 
 e.g. :
-```
 
 ```
 
+```
 
 ## Kubernetes
 
@@ -249,7 +247,7 @@ the place when deploy all the application
 - **NodePort :** Define your service with a **type: `NodePort`** in its Service specification.
     This type exposes the service on a specific port of each cluster node's IP address. It makes the service accessible from outside the cluster by using the node's IP address and the assigned NodePort.
 
-    - **Note**: This approach is typically used for development or testing purposes and may not be suitable for production deployments.
+  - **Note**: This approach is typically used for development or testing purposes and may not be suitable for production deployments.
 - **Load Balancer:** This type provisions an external load balancer (e.g., from a cloud provider) that directs traffic to the service. It automatically assigns an external IP address, making the service accessible from outside the cluster.
 
 **conclusion** : the service works as a service that enable communication inside or outside the cluster .
@@ -510,7 +508,6 @@ Efficient external exposure (Ingress + ALB)
 
 ---
 
-
 ## AWS
 
 - It is a platform that offers cloud computing solutions
@@ -535,7 +532,7 @@ handling administrative tasks like patching, backups, and scaling to let users f
 
 - ***Flexibility:*** You can choose exactly how much CPU, RAM, and Storage you need.
 
-### getting started with practice:
+### getting started with practice
 
 1. Prerequisites
 
@@ -557,9 +554,9 @@ Before deploying your Docker containers, you need the "home" for your services a
 
 After successfully installing Chocolatey, you can use the following commands to install different CLI tools:
 
-2. Install required CLIs :
+1. Install required CLIs :
 
-    ```bash 
+    ```bash
     choco install awscli
     choco install kubernetes-cli
     choco install eksctl 
@@ -567,10 +564,10 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     - Why These Tools?  
         - The **AWSCLI** is a powerful tool that allows users to interact with various AWS resources and services through a command-line interface.
-        - **kubectl** to manage Kubernetes resources (pods, services, deployments) 
+        - **kubectl** to manage Kubernetes resources (pods, services, deployments)
         - eksctl tool to create and manage EKS clusters
 
-3. Connect AWS using CLI
+2. Connect AWS using CLI
     - **required :**  create AWS Account you can use Free trial aws
     - Generate Access Keys :
         - Sign in to the AWS Management Console using your root user credentials
@@ -578,21 +575,21 @@ After successfully installing Chocolatey, you can use the following commands to 
         - Inside IAM click manage Access Keys
         - Click create access key and download .csv file
 
-4. Connect CLI to AWS
+3. Connect CLI to AWS
     - Open CMD
     - run command `aws configure`
     - Enter `AWS Access Key ID` and `AWS secret access key`
 
-5. Eksctl
+4. Eksctl
     - What is EKSCTL ?
-        eksctl is a simple command line tool for creating and managing Kubernetes clusters on Amazon EKS. https://eksctl.io/.
+        eksctl is a simple command line tool for creating and managing Kubernetes clusters on Amazon EKS. <https://eksctl.io/>.
 
-        We can create a basic cluster in minutes with just one command : 
+        We can create a basic cluster in minutes with just one command :
         `eksctl create cluster`, but the cluster will be created with default parameters.
 
         But we might need some customization so either we can :
         - create a yaml file `cluster.yaml` e.g.
-        - Give params in command line e.g. 
+        - Give params in command line e.g.
 
     eksctl provides the fastest and easiest way to create a new cluster with nodes for Amazon EKS  
 
@@ -612,13 +609,12 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     ![created_cluster.png](images/created_cluster.png)
 
-
     When the eksctl create cluster command completes successfully, it generates the
     kubeconfig file with the appropriate configurations, including the cluster's endpoint,
     authentication details, and other necessary information. This kubeconfig file is then
     stored on your local machine in the default location
 
-    Tasks done by this simple command : 
+    Tasks done by this simple command :
 
     - **Node Group Creation:** eksctl provisions the specified node group(s) within the EKS
     cluster. This involves launching EC2 instances or Fargate pods as worker nodes
@@ -652,9 +648,9 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     - By default, the kubeconfig file is updated with the necessary information to connect to the newly created EKS cluster, allowing you to use tools like kubectl to interact with the cluster from your local machine..
 
-6. RDS (SQL DB )
+5. RDS (SQL DB )
     - Why AWS RDS ?
-        - We can Deploy Our DB also as a Deployment / POD 
+        - We can Deploy Our DB also as a Deployment / POD
 
         - But what if POD crashes?
 
@@ -664,7 +660,7 @@ After successfully installing Chocolatey, you can use the following commands to 
 
             - Deployments with Persistent volumes - but not recommended bcz its for stateless apps
             - Stateful set with PV - difficult to manage n create
-            -   Best way is to segregate it completely outside the cluster 
+            - Best way is to segregate it completely outside the cluster
             - So use AWS RDS
 
     - What is AWS RDS ?
@@ -700,10 +696,10 @@ After successfully installing Chocolatey, you can use the following commands to 
         7. Configure additional settings: Set up the remaining configuration options, such as the Virtual Private Cloud (VPC) and security groups for network access, database port number (e.g.3306 for MySQL, 5432 for PostgreSQL), backup settings, maintenance preferences, etc. Adjust these settings based on your requirements.
 
         8. Access and manage your RDS instance: Once the RDS instance is created successfully, you can access it using various methods like connecting through an application, using a database management tool, or connecting via the AWS Command Line Interface (CLI). The specific steps for accessing and managing your RDS instance will depend on the database engine you chose.
-        eg : 
+        eg :
         ![connect_way](images/connect_way.png)
 
-7. Mongodb Atlas ( NOSQL DB )
+6. Mongodb Atlas ( NOSQL DB )
     - What is Mongo DB Atlas ?
 
         MongoDB Atlas is a fully managed cloud database service provided by
@@ -714,7 +710,7 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     - How to setup MongoDB Atlas
 
-        1.  Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+        1. Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
         2. Deploy a Cluster :
 
@@ -734,11 +730,11 @@ After successfully installing Chocolatey, you can use the following commands to 
 
             Alternatively, you can allow access from anywhere (0.0.0.0/0), but this is not recommended for production environments.
 
-        -  Create a Database User
+        - Create a Database User
 
             ![alt text](images/DB/mangoAtlas/cluster_created.png)
 
-        4. Connect with MongoDB Compass (GUI)
+        1. Connect with MongoDB Compass (GUI)
             ![alt text](images/DB/mangoAtlas/connect_with_compass.png)
         - Copy the connection string provided by MongoDB Atlas.
             ![alt text](images/DB/mangoAtlas/mongo_compass.png)
@@ -747,7 +743,7 @@ After successfully installing Chocolatey, you can use the following commands to 
 
         u are Connected
 
-8. Manifest file
+7. Manifest file
     1. Kubernetes manifest files
         - What is kubernetes manifest file
 
@@ -775,8 +771,6 @@ After successfully installing Chocolatey, you can use the following commands to 
             - **Collaboration & Sharing** : Manifest files serve as a common language for teams, facilitating sharing, collaboration, and best practice adoption.
 
             - **Resource Management** : Manifest files define and manage various Kubernetes resources, specifying resource requirements, networking, storage, and other parameters.
-
-
 
     2. Manifest file creation
 
@@ -862,12 +856,11 @@ After successfully installing Chocolatey, you can use the following commands to 
              `selector`  Matches pods with the given label  
              `port`  Port exposed by the Service  
              `targetPort`  Port on the pod that receives the traffic  
-             `type`  Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`) 
-
+             `type`  Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`)
 
         - Configmap manifest file  
             The ConfigMap stores non-sensitive configuration data as key-value pairs.  
-            
+
             ```yaml
             apiVersion: v1
             kind: ConfigMap
@@ -897,11 +890,12 @@ After successfully installing Chocolatey, you can use the following commands to 
             db-username: YWRtaW4=       # base64 encoded value of "admin"
             db-password: cGFzc3dvcmQ=   # base64 encoded value of "password"
             ```
+
          `apiVersion`  API version (`v1`)  
          `kind`  Type of object (`Secret`)  
          `type: Opaque`  Generic secret with base64-encoded data  
          `data`  Key-value pairs where values are base64-encoded  
- 
+
         **Encoding a value to base64:**  
 
             ```bash
@@ -909,8 +903,8 @@ After successfully installing Chocolatey, you can use the following commands to 
             # Output: bXlwYXNzd29yZA==
             ```
         > **Warning:** Base64 encoding is **not** encryption. Always use RBAC and restrict access to Secrets in production environments.
-        
-9. Kubectl  
+
+8. Kubectl  
     Now that the manifest files are ready, we use `kubectl` to interact with the Kubernetes cluster.
 
     - What is Kubectl  ?  
@@ -918,11 +912,12 @@ After successfully installing Chocolatey, you can use the following commands to 
 
     - Important Kubectl commands
         **Apply the manifests**
- 
+
         ```bash
         # Applies all YAML files in the current directory to create or update resources in the cluster
         kubectl apply -f .
         ```
+
         > **Why this order?** The Deployment depends on the ConfigMap and Secret being available first, so make sure all files are in the same directory.
 
         **Verify everything is running** :
@@ -954,7 +949,7 @@ After successfully installing Chocolatey, you can use the following commands to 
             ```
 
         **Delete the resources**
-    
+
         ```bash
         # Deletes a specific deployment identified by its name
         kubectl delete deployment <deployment-name>
@@ -963,7 +958,7 @@ After successfully installing Chocolatey, you can use the following commands to 
         kubectl delete svc <svc-name>
         ```
 
-10. Load Balancer
+9. Load Balancer
 
     - What is Load Balancer ?
         A load balancer is a networking device or software application that distributes and balances the incoming traffic among the servers to provide high availability, efficient utilization of servers and high performance.  
@@ -980,13 +975,13 @@ After successfully installing Chocolatey, you can use the following commands to 
             Example: Server A down  traffic goes to B & C
         - **Scalability (Grow Easily)**  
             You can add more servers when traffic increases  
-            Load balancer automatically starts using them    
+            Load balancer automatically starts using them
             This is called **horizontal scaling**
         > We use load balancing to distribute traffic across multiple servers to improve performance, ensure high availabil
         ity, and enable scalability.  
         Load balancing is essential in cloud and microservices architectures because it prevents single points of failure and allows systems to scale horizontally.
 
-11. AWS Load Balancer
+10. AWS Load Balancer
 
     In Amazon Web Services, load balancing is provided by Elastic Load Balancing (ELB), which offers multiple types designed for different use cases:
 
@@ -1032,8 +1027,7 @@ After successfully installing Chocolatey, you can use the following commands to 
     - Supports SSL/TLS termination, health checks, and integration with other AWS services.
     - Simplifies the management of traffic routing and load balancing for your Kubernetes services in the AWS cloud environment.
 
-
-12. ALB Controller and Ingress
+11. ALB Controller and Ingress
 
     In Kubernetes, "Ingress" and "ALB controller" (can be used as an Ingress Controller in Kubernetes.) are two related concepts that work together to provide external access to services running within a cluster. Here's the difference between them
 
@@ -1054,6 +1048,7 @@ After successfully installing Chocolatey, you can use the following commands to 
         kubectl installed  
         eksctl installed  
     - Install Helm
+
         ```bash
         choco install kubernetes-helm
         helm repo add eks https://aws.github.io/eks-charts
@@ -1062,26 +1057,33 @@ After successfully installing Chocolatey, you can use the following commands to 
         ```
 
     - step 1 : IAM Permissions
+
         ```bash
         curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
         ```
+
         This IAM policy allows it to make calls to AWS APIs on your behalf.
 
         To apply this policy on your AWS account run below command
+
         ```bash
         aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam_policy.json
         ```
+
         Below command is used to establish the required connection between the EKS cluster and IAM, enabling the ALB Controller to authenticate and perform necessary actions within the AWS environment.
+
         ```bash
             eksctl utils associate-iam-oidc-provider --region <your-region> --cluster <your-cluster-name> --approve
         ```
+
         ![oidc](images/oidc.png)
 
         **conclusion** When deploying the AWS Load Balancer Controller (ALB Controller) on an Amazon EKS cluster, it requires an IAM OIDC provider to authenticate and authorize actions with AWS services. The ALB Controller uses IAM roles and policies to interact with other AWS services, such as creating and managing Application Load Balancers (ALBs). By associating the IAM OIDC provider with the EKS cluster, it allows the ALB Controller to assume IAM roles and access the necessary resources.
 
         Create an IAM role. Create a Kubernetes service account named aws-load-balancer-controller in the kube-system namespace for the AWS Load Balancer Controller and annotate the Kubernetes service account with the name of the IAM role.Create IAM Role + Service Account (IRSA)
-        
+
         Replace the values for cluster name, region code, and account ID
+
         ```bash
         eksctl create iamserviceaccount 
         --cluster=<cluster-name> 
@@ -1092,21 +1094,24 @@ After successfully installing Chocolatey, you can use the following commands to 
         --region <aws-region-code> 
         --approve
         ```
+
         ![iamserviceaccount](images/iamserviceaccount.png)
         Install cert-manager  
          > Why Cert‑Manager Appears in Manifest Instructions but Not in Helm ?  
             Helm installation: The AWS Load Balancer Controller Helm chart handles webhook certificates internally.  
             No separate cert‑manager is needed for the controller when using Helm.  
-            That’s why the official Helm guide doesn’t mention cert‑manager the controller manages its own certificates automatically. 
-            Webhook certificates Automatically handled by Helm , Requires cert-manager if using full manifest 
+            That’s why the official Helm guide doesn’t mention cert‑manager the controller manages its own certificates automatically.
+            Webhook certificates Automatically handled by Helm , Requires cert-manager if using full manifest
     - step 2 :  Install ALB Controller
         Add the eks-charts Helm chart repository  
+
         ```bash
         helm repo add eks https://aws.github.io/eks-charts
         helm repo update eks
         ```
 
         Install the ALB Controller
+
         ```bash
             helm install aws-load-balancer-controller eks/aws-load-balancer-controller 
             -n kube-system 
@@ -1117,36 +1122,38 @@ After successfully installing Chocolatey, you can use the following commands to 
             --set vpcId=vpc-xxxxxxxx 
             --version 1.14.0
         ```
+
         ![alt text](images/install_ALBC.png)
 
         The helm install command automatically installs the custom resource definitions (CRDs) for the controller. The helm upgrade command does not. If you use helm upgrade, you must manually install the CRDs. Run the following command to install the CRDs:  
+
         ```bash
             wget https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/crds.yaml
             kubectl apply -f crds.yaml
         ```
 
         Verify that the controller is installed
+
         ```bash
         kubectl get deployment -n kube-system aws-load-balancer-controller
         ```
 
         ![aws-load-balancer-controller](images/aws-load-balancer-controller_created.png)
 
-
     **guide**  
     with helm <https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html>  
     with manifestfile <https://docs.aws.amazon.com/eks/latest/userguide/lbc-manifest.html>
 
-13. Ingress
+12. Ingress
 
     - What is Ingress?
         Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. Traffic routing is controlled by rules defined on the Ingress resource.  
         In Kubernetes, an Ingress is an API object that manages external access to services inside the cluster.  
         It acts as the “Front Door” of your application.  
         Ingress provides:  
-            * Centralized routing  
+            *Centralized routing  
             * Single entry point  
-            * Clean architecture for microservices 
+            * Clean architecture for microservices
     - Flow
 
 ```mermaid
@@ -1165,7 +1172,6 @@ graph LR;
   class client plain;
   class cluster cluster;
 ```
-
 
 ***example***  
     ```yml
@@ -1223,11 +1229,12 @@ graph LR;
                         port:
                         number: 9093
     ```
-- **explication**   
+
+- **explication**
     `alb.ingress.kubernetes.io/scheme: internet-facing` : Defines whether the ALB is public or private.
         - `internet-facing` : accessible from the public internet.  
         - `internal` :  accessible only within the VPC (private)
-    
+
     `alb.ingress.kubernetes.io/target-type: ip` : defines how the ALB routes traffic to your pods.  
         - `ip` : routes directly to the Pod IP (recommended with VPC CNI)  
         - `instance` : routes to the Node IP, then kube-proxy forwards to the pod
@@ -1235,15 +1242,15 @@ graph LR;
     `spec.ingressClassName: alb` :  Links this Ingress resource to a specific Ingress Controller.
     Tells Kubernetes which controller should handle this Ingress (e.g., alb for AWS Load Balancer Controller, nginx for NGINX Controller).
 
-    `rules:` : Describes the routing rules for all incoming HTTP traffic.    
+    `rules:` : Describes the routing rules for all incoming HTTP traffic.
         - Each rule maps a URL path to a backend Service and port  
         - path: `/restaurant` ->forwards to `restaurant-servic`e on port `9091`  
 
     `pathType: Prefix` : Controls how the path is matched against incoming URLs  
         - `Prefix` matches any URL starting with that path (e.g., /foo/123 matches /foo)  
         - `Exact`  matches only the exact path (e.g., /fop does NOT match /foo/123)
-    
- - **Additional Production Annotations**  
+
+- **Additional Production Annotations**  
     `alb.ingress.kubernetes.io/group.name: my-group-name` : Groups multiple Ingress resources to share a single ALB, reducing cost and resource usage
 
     `alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'` : Specifies which ports the ALB listens on. Enables both HTTP (80) and HTTPS (443) traffic entry points
@@ -1278,7 +1285,7 @@ It helps you:
 ### what is JUnit ?
 
 JUnit is a testing framework  
-key concept : 
+key concept :
 
 - **Unit Testing:** JUnit allows developers to test individual parts of their code to ensure they work as intended
 
@@ -1291,6 +1298,7 @@ key concept :
 - **test Naming Convention**Test names should be clear and descriptive, explaining what the test does and what result is expected ex : `shouldReturnTotalPrice_whenItemsAreValid()`
 
 - **Test Structure:** Follow the Arrange-Act-Assert (AAA) pattern in your tests ex :
+
     ```java
     @Test
     void shouldAddTwoNumbers() {
@@ -1306,10 +1314,9 @@ key concept :
     }
     ```
 
-
 - **Test Independence:** Each test should be independent and rely on the state or outcome of other tests. This ensures that tests can be executed individually without interference ex : Each test creates its own data
 
-- **Test Coverage:** Ensure your tests cover all critical paths including edge cases, error handling, and boundary conditions 
+- **Test Coverage:** Ensure your tests cover all critical paths including edge cases, error handling, and boundary conditions
 Make sure tests cover:  
     Normal cases  
     Edge cases (empty input, null)  
@@ -1400,18 +1407,19 @@ With CI:
 - Developers regularly commit their code to a shared repository.
 - The CI server automatically triggers a build when new code is pushed.
 - The build process includes:
-    - Compiling the code
-    - Running automated tests
-    - Performing code quality checks
+  - Compiling the code
+  - Running automated tests
+  - Performing code quality checks
 - If errors are found:
-    - The CI system notifies developers immediately
-    - Developers fix the issues quickly
+  - The CI system notifies developers immediately
+  - Developers fix the issues quickly
 - After fixing:
-    - The system rebuilds and retests the application
+  - The system rebuilds and retests the application
 - If everything passes:
-    - The code is considered stable and ready for deployment
+  - The code is considered stable and ready for deployment
 
 chart :  
+
 ```mermaid
 flowchart TD
 
@@ -1440,7 +1448,7 @@ K --> L[Ready for Deployment]
 L --> M[Team Confident to Release]
 ```
 
-2. What is Continuous Deployment (CD) ?
+1. What is Continuous Deployment (CD) ?
 
 ### Sonarqube
 
@@ -1450,15 +1458,15 @@ Its main goal is to ensure reliable, maintainable, and secure code throughout th
 
 - **Key Features:**
 - Code Quality Analysis  
-    - Checks code using predefined rules to find bugs, vulnerabilities, and bad practices.
+  - Checks code using predefined rules to find bugs, vulnerabilities, and bad practices.
 - Improves Maintainability
-    - Detects code smells (poor structure), making code easier to read and maintain.
+  - Detects code smells (poor structure), making code easier to read and maintain.
 - Enhances Security
-    - Identifies common risks like SQL injection and XSS attacks.
+  - Identifies common risks like SQL injection and XSS attacks.
 - CI/CD Integration
-    - Works with your pipeline to analyze code automatically on each build.
+  - Works with your pipeline to analyze code automatically on each build.
 - Team Collaboration
-    - Provides a shared dashboard where the team can review and improve code together.
+  - Provides a shared dashboard where the team can review and improve code together.
 
 ---
 
@@ -1480,7 +1488,7 @@ Jenkins is a popular open-source automation tool that helps automate various tas
     It integrates code changes frequently by:  
         - Monitoring version control systems like Git  
         - Automatically triggering builds on every commit or pull request  
-    
+
 - **Automated Build and Testing**  
     Every change is validated through:  
         - Compilation  
@@ -1516,7 +1524,7 @@ Jenkins is a popular open-source automation tool that helps automate various tas
 
 - **Conclusion** : Jenkins automates the repetitive tasks of a software pipeline building, testing, and integrating code. It gives developers immediate feedback on every change, catches bugs early, and ensures only stable code reaches production.
 
-2. Jenkins File
+1. Jenkins File
 
 ```groovy
 pipeline {
@@ -1581,7 +1589,7 @@ pipeline {
 }
 ```
 
-3. Understanding Jenkins file
+1. Understanding Jenkins file
 
 - The `pipeline` keyword defines the start of the Jenkins pipeline. It contains all the steps executed by Jenkins
 
@@ -1594,13 +1602,13 @@ pipeline {
 - `stages`: Contains a collection of stages that represent the different steps of the pipeline.
 
 - `stage` is used to define each step in the pipeline, where every step performs a specific task in the CI/CD process such as:
-    - Building the application
-    - Running tests
-    - Analyzing code quality
-    - Checking code coverage
-    - Deploying the application
-    - Security scanning
-    - Packaging the application
+  - Building the application
+  - Running tests
+  - Analyzing code quality
+  - Checking code coverage
+  - Deploying the application
+  - Security scanning
+  - Packaging the application
 
 ---
 
@@ -1611,7 +1619,7 @@ Argo CD is an open-source Continuous Delivery (CD) tool designed for Kubernetes 
 
 It continuously compares the desired state in Git with the actual state in the cluster and keeps them in sync.
 
-2. Why  Argo CD ?
+1. Why  Argo CD ?
 
 Argo CD is used because it simplifies and automates Kubernetes deployments by:
 
@@ -1649,27 +1657,32 @@ Argo CD is used because it simplifies and automates Kubernetes deployments by:
     - **System Preparation**
 
         - install Maven
+
         ```bash
         sudo apt install maven -y
         mvn -version
         ```
 
         - install Open JDK:
+
             ```bash
             sudo apt install openjdk-17-jdk -y
             java -version
             ```
 
         - install docker
+
             ```bash
             sudo yum update -y
             sudo yum install -y docker 
             sudo service docker start 
             sudo chkconfig docker on # This command configures the docker service to start automatically on system boot
             ```
+
             Overall, these commands update the system, install Docker , start the docker service, and set it to automatically start to system boot , allowing you to work with docker and run containerized app on your linux system
 
         - install nodejs
+
             ```bash
             sudo apt install nodejs npm -y
             node -v
@@ -1677,6 +1690,7 @@ Argo CD is used because it simplifies and automates Kubernetes deployments by:
             ```
 
         - install git
+
             ```bash
             sudo apt install git -y
             git --version 
@@ -1692,38 +1706,41 @@ Argo CD is used because it simplifies and automates Kubernetes deployments by:
             ```
 
         - Install Jenkins
+
             ```bash
             sudo wget -O /etc/yum.repos.d/jenkins.repo \https://pkg.jenkins.io/redhat-stable/jenkins.repo
             sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
             sudo yum install jenkins -y
             sudo systemctl enable jenkins
+            sudo usermod -aG docker jenkins # give Jenkins permission to use Docker
             sudo systemctl start jenkins
             ```
-
 
 2. Continuous Integration (CI)  
 ` “Build + Test + Analyze code” `
 This part = runs on every commit
 
 - **SonarQube**
+
     we installed sonar now run sonarQube :
 
     ```bash
     sudo  docker run -d -p 9000:9000 —name sonarqube sonarqube
     sudo  docker logs -f sonarqube # to check the logs
     ```
+
     **hits:** you can access sonarQube from UI Dashboard using public Ip address of EC2 instance your-ec2-public-ip:9000 ex  : 12.345.67.89:9000
 
     Default credentials:  
-        Username: admin   
+        Username: admin
         Password: admin
-
 
     Generate token .
     token act as Access ticket that allows Jenkins to send code analysis results to SonarQube  
-    click on user icon -> my account -> security and create new token 
+    click on user icon -> my account -> security and create new token
     ![create_new_token](images/sonarQube/create_new_token.png)
-    to generate token remplire the this section
+    Fill in the required information to generate the token:
+
     ![generate_token.](images/sonarQube/generate_token.png)
 
     copy the token and save it for jenkins .won’t see it again
@@ -1736,6 +1753,7 @@ This part = runs on every commit
             ![line coverage](images/sonarQube/line_coverage.png)
 
     Now put following  plugin inside the `plugins` section of your `pom.xml` :  
+
     ```xml
     <!-- jacoco -->
     <plugin>
@@ -1758,25 +1776,219 @@ This part = runs on every commit
     </executions>
     </plugin>
     ```
+
     This plugin:  
         Runs with your tests  
         Generates coverage reports  
         Sends data to SonarQube
 
-    To run sonar in local and push report in sonar dashboard : 
-    `mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://replace-with-your-proper-EC2-instance-URL:9000/ -Dsonar.token=SonareQube-token `
-   
+    To run sonar in local and push report in sonar dashboard :
+    `mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://replace-with-your-proper-EC2-instance-URL:9000/ -Dsonar.token=SonareQube-token`
+
    This command is used within Jenkins to run the build, execute tests, and send the code analysis results to SonarQube. After execution, you can view important metrics such as code coverage, bugs, code smells, and duplications directly in the SonarQube dashboard, accessible via your EC2 public IP (e.g., http://<EC2-IP>:9000). With the proper configuration of the JaCoCo plugin, a coverage report is automatically generated during test execution and integrated into SonarQube, allowing detailed visualization of code quality. Initially, this command is run locally to validate that tests and analysis are working correctly, and the results are verified in the SonarQube UI. Once confirmed, the same process is integrated into a CI/CD pipeline to enable full automation of code quality checks on every commit.
 
 - **Jenkins**
-    first of all check the status of jenkins 
-        `sudo systemctl status jenkins `
 
+    first of all check the status of jenkins if works
+        `sudo systemctl status jenkins`
 
+    ![running](images/jenkins/running_jenkins.png)
 
-3. Continuous Deployment (CD)  
+    then go to the jenkins UI using your-ec2-public-ip:8080 ex : 12.893.30.68:8080
+
+    After this get password from below command in jenkins:  
+        ```bash
+        sudo  cat /var/lib/jenkins/secrets/initialAdminPassword
+        ```
+    and paste it here :  
+    ![initialAdminPassword](images/jenkins/initialAdminPassword.png)
+
+    choose install suggested plugins  :  
+    ![plugins](<images/jenkins/plugins.png>)
+
+    After jenkins installation add SSH plugin  
+    Manage jenkins - plugins  
+        - Available plugin -> Search : SSH Agent -> intall without restart  
+        then :  1
+        - Manage jenkins -> tools -> Add Maven
+
+  - Next: GitHub Webhook Integration
+    we go to <https://github.com/> -> choose the repository that you need  
+
+        we navigate to repository :  
+            - Settings -> webhooks -> Add webhook
+
+        ![webhook](images/jenkins/github_webhook.png)
+        fill in payload url the `ec2-public-ip:8080/github-webhook/`
+
+  - we go to the terminal :  
+        Create SSH key in jenkins server command :  
+            - run : `ssh-keygen -t rsa -b 4096`  
+            - command to fetch public key : `cat ~/.ssh/id_rsa.pub`  
+            - command to fetch private key : `cat ~/.ssh/id_rsa`
+
+        then Add this public key in github -> go to setting go to ssh key and add new key
+
+        Add private key jenkins now -> Go to jenkins -> manage jenkins -> credentials -> click on system -> global -> Add Credentials ->  ssh username with private key
+
+        Add docker creds - user name with password  
+            - username : ousamalasri  
+            - id : DOCKER_HUB_CREDENTIAL - id
+
+    - So We go to Jenkins UI and create a pipeline with Github URL :  
+
+        ![alt text](images/jenkins/Pipeline_1.png)
+            New Item -> Pipeline ->
+
+        ![alt text](images/jenkins/pipeline_2.png)
+
+        ![alt text](images/jenkins/pipeline_3.png)
+
+    - next we create Jenkinsfile and add it in my project repo :
+
+        ```groovy
+
+        pipeline {
+        agent any
+
+        environment {
+
+            
+            DOCKERHUB_CREDENTIALS = credentials('DOCKER_HUB_CREDENTIAL')
+            DOCKER_IMAGE = "ousamalasri/restaurant-listing-service"
+            VERSION = "${env.BUILD_ID}"
+
+          
+            SONAR_HOST_URL = "http://18.170.111.95:9000"
+            SONAR_TOKEN = "squ_f334ef2fd8be4bd168a786df093e1d14978557bc"
+            COMPONENT_KEY = "com.ousama:restaurantlisting"
+
+           
+            COVERAGE_THRESHOLD = "80.0"
+
+            
+            GITOPS_REPO = "git@github.com:Oussama-lasri/deployment-folder.git"
+            GITOPS_BRANCH = "master"
+            MANIFEST_PATH = "AWS/restaurant-manifest.yml"
+        }
+
+        tools {
+            maven "Maven"
+        }
+
+        stages {
+
+            stage('Maven Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+            }
+
+            stage('Run Tests') {
+            steps {
+                sh 'mvn test'
+            }
+            }
+
+            stage('SonarQube Analysis') {
+            steps {
+                sh """
+                mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar \
+                -Dsonar.host.url=${SONAR_HOST_URL} \
+                -Dsonar.token=${SONAR_TOKEN}
+                """
+            }
+            }
+
+            stage('Check code coverage') {
+            steps {
+                script {
+
+                def response = sh (
+                    script: """
+                    curl -H "Authorization: Bearer ${SONAR_TOKEN}" \
+                    "${SONAR_HOST_URL}/api/measures/component?component=${COMPONENT_KEY}&metricKeys=coverage"
+                    """,
+                    returnStdout: true
+                ).trim()
+
+                def coverage = sh (
+                    script: "echo '${response}' | jq -r '.component.measures[0].value'",
+                    returnStdout: true
+                ).trim().toDouble()
+
+                echo "Coverage: ${coverage}"
+
+                if (coverage < COVERAGE_THRESHOLD.toDouble()) {
+                    error "Coverage is below threshold ${COVERAGE_THRESHOLD}%"
+                }
+                }
+            }
+            }
+
+            stage('Docker Build and Push') {
+            steps {
+                sh """
+                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                docker build -t ${DOCKER_IMAGE}:${VERSION} .
+                docker push ${DOCKER_IMAGE}:${VERSION}
+                """
+            }
+            }
+
+            stage('Cleanup Workspace') {
+            steps {
+                deleteDir()
+            }
+            }
+
+            stage('Update Image Tag in GitOps') {
+            steps {
+                checkout scmGit(
+                branches: [[name: "*/${GITOPS_BRANCH}"]],
+                userRemoteConfigs: [[
+                    credentialsId: 'git-ssh',
+                    url: "${GITOPS_REPO}"
+                ]]
+                )
+
+                script {
+                sh """
+                    sed -i 's|image:.*|image: ${DOCKER_IMAGE}:${VERSION}|' ${MANIFEST_PATH}
+                """
+
+                sh """
+                    git checkout ${GITOPS_BRANCH}
+                    git add .
+                    git commit -m "Update image tag to ${VERSION}" 
+                """
+
+                sshagent(['git-ssh']) {
+                    sh "git push origin ${GITOPS_BRANCH}"
+                }
+                }
+            }
+            }
+        }
+        always {
+            echo 'Pipeline finished. Cleaning workspace.'
+            cleanWs()
+        }
+        success {
+            echo "Pipeline succeeded. Image: ${DOCKER_IMAGE}:${VERSION}"
+        }
+        failure {
+            echo 'Pipeline failed.'
+            // TODO:  slack
+        }
+        }
+        ```
+
+then push any change in your code for check  
+![success](images/jenkins/pipeline_succes.png)
+
+1. Continuous Deployment (CD)  
 `“Deploy application automatically”`
-
 
 ---
 

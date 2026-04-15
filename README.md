@@ -1271,7 +1271,11 @@ graph LR;
 
 To successfully expose your app using Ingress, first make sure an Ingress Controller (like AWS ALB or NGINX) is installed otherwise the Ingress won’t create any external access; then ensure your Service  and pods are running correctly, define a proper ingress.yaml with correct annotations and service references, and apply it using `kubectl apply -f ingress.yaml`, then verify with `kubectl get ingress` and `kubectl describe ingress <name>` to get the external address .common mistakes include missing the controller, wrong annotations, incorrect service name/port, or applying from the wrong directory.
 
-<video controls src="videos/success_access (1).mp4" title="Title"></video>
+
+
+https://github.com/user-attachments/assets/23dfcf15-bf12-4a5e-8766-5fcb67a336bd
+
+
 ---
 
 ## Testing

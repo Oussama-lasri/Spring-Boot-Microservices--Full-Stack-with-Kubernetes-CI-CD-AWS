@@ -1267,6 +1267,11 @@ graph LR;
 
     `alb.ingress.kubernetes.io/backend-protocol: HTTP`:  Defines the protocol used between the ALB and your pods (e.g., HTTP or HTTPS). Use HTTPS if your pods handle TLS internally (end-to-end encryption)
 
+- **Apply Ingress**
+
+To successfully expose your app using Ingress, first make sure an Ingress Controller (like AWS ALB or NGINX) is installed otherwise the Ingress won’t create any external access; then ensure your Service  and pods are running correctly, define a proper ingress.yaml with correct annotations and service references, and apply it using `kubectl apply -f ingress.yaml`, then verify with `kubectl get ingress` and `kubectl describe ingress <name>` to get the external address .common mistakes include missing the controller, wrong annotations, incorrect service name/port, or applying from the wrong directory.
+
+<video controls src="videos/success_access (1).mp4" title="Title"></video>
 ---
 
 ## Testing
@@ -1986,6 +1991,8 @@ This part = runs on every commit
 
 then push any change in your code for check  
 ![success](images/jenkins/pipeline_succes.png)
+
+<video controls src="videos/pratice section.mp4" title="Title"></video>
 
 1. Continuous Deployment (CD)  
 `“Deploy application automatically”`

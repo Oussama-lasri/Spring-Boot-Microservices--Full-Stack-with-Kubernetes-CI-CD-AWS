@@ -155,6 +155,7 @@ When we Hit OrderNow button,  the order details and user id reached backed, This
 
 A lightweight Angular  application that communicates with the backend through the API.
 
+![front end](images/FE.png)
 ---
 
 ## Containerization - Docker
@@ -1996,7 +1997,6 @@ This part = runs on every commit
 then push any change in your code for check  
 ![success](images/jenkins/pipeline_succes.png)
 
-<video controls src="videos/pratice section.mp4" title="Title"></video>
 
 1. Continuous Deployment (CD)  
 `“Deploy application automatically”`

@@ -1,6 +1,6 @@
 # Spring-Boot-Microservices----Full-Stack-with-Kubernetes-CI-CD-AWS
 
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 ![Angular](https://img.shields.io/badge/Angular-17+-DD0031?style=for-the-badge&logo=angular&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
@@ -1646,6 +1646,7 @@ Argo CD is used because it simplifies and automates Kubernetes deployments by:
 
 ![ci_cd_pipeline](images/ci_cd_pipeline.png)
 
+
 1. Infrastructure and Installation
 
     - **Create an EC2 instance**
@@ -1998,11 +1999,151 @@ then push any change in your code for check
 ![success](images/jenkins/pipeline_succes.png)
 
 
-1. Continuous Deployment (CD)  
-`“Deploy application automatically”`
+3. Continuous Deployment (CD)  
+
+`"Deploy application automatically"`  
+Argo CD handles GitOps-based automatic deployment of the application to Kubernetes.
 
 ---
 
-API Gateway
-Security Layer
-Observability
+#### Argo CD Installation
+
+```bash
+# Create namespace
+kubectl create namespace argocd
+
+# Install Argo CD
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+#### Access Argo CD UI
+
+```bash
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+
+Then open: `https://localhost:8080`
+
+**Login credentials:**
+- **Username:** `admin`
+- **Password:** run the command below and decode the output
+
+```bash
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
+```
+
+#### Install Argo CD CLI
+
+```bash
+choco install argocd-cli
+```
+
+---
+
+#### Configure SSH Access to GitHub
+
+**Generate SSH key pair:**
+
+```bash
+ssh-keygen -t ed25519 -C "jenkins-argocd"
+```
+
+- **Public key** -> add to GitHub:
+```bash
+  cat ~/.ssh/id_ed25519.pub
+```
+  -> **GitHub Repo -> Settings -> Deploy Keys -> Add Key**
+
+- **Private key** -> used in the Kubernetes secret below:
+```bash
+  cat ~/.ssh/id_ed25519
+```
+
+**Create `deployment folder/application ressources/git-creds-secret.yaml`:**
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-creds
+  namespace: argocd
+type: Opaque
+stringData:
+  sshPrivateKey: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    YOUR_PRIVATE_KEY
+    -----END OPENSSH PRIVATE KEY-----
+```
+
+Apply it:
+
+```bash
+kubectl apply -f git-creds-secret.yaml
+```
+
+---
+
+#### Create the Argo CD Application
+
+Create `deployment folder/application ressources/application.yaml`:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: restaurant-listing-default
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: |
+      foodcatalogue=docker.io/ousamalasri/food-catalogue,
+      restaurant=docker.io/ousamalasri/restaurant-service,
+      order=docker.io/ousamalasri/order-service,
+      userinfo=docker.io/ousamalasri/user-info-service
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds
+    argocd-image-updater.argoproj.io/git-branch: master
+    argocd-image-updater.argoproj.io/foodcatalogue.force-update: "true"
+    argocd-image-updater.argoproj.io/restaurant.force-update: "true"
+    argocd-image-updater.argoproj.io/order.force-update: "true"
+    argocd-image-updater.argoproj.io/userinfo.force-update: "true"
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:Oussama-lasri/deployment-folder.git
+    targetRevision: HEAD
+    path: AWS
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=true
+```
+
+Apply it:
+
+```bash
+kubectl apply -f application.yaml
+```
+
+**Argo CD sync:**
+
+<video controls src="videos/argocd.mp4" title="Title"></video>
+
+---
+
+#### End-to-End Demo: Push to Deployment
+
+From a code push on GitHub to Argo CD automatically syncing and deploying to EKS
+
+**Frontend pipeline:**
+<!-- <video controls src="videos/cicd-pipeline-frontend.mp4" title="Title"></video> -->
+
+**Backend pipeline:**
+<!-- <video controls src="videos/cicd-pipeline-backend.mp4" title="Title"></video> -->
+

@@ -2133,7 +2133,13 @@ kubectl apply -f application.yaml
 
 **Argo CD sync:**
 
-<video controls src="videos/argocd.mp4" title="Title"></video>
+
+
+
+https://github.com/user-attachments/assets/6a91a175-63e0-4119-815e-9da648772249
+
+
+<!-- <video controls src="videos/argocd.mp4" title="Title"></video> -->
 
 ---
 
@@ -2144,6 +2150,15 @@ From a code push on GitHub to Argo CD automatically syncing and deploying to EKS
 **Frontend pipeline:**
 <!-- <video controls src="videos/cicd-pipeline-frontend.mp4" title="Title"></video> -->
 
+
+https://github.com/user-attachments/assets/26706299-d014-490d-a874-d2aea12de9dc
+
+
+
 **Backend pipeline:**
 <!-- <video controls src="videos/cicd-pipeline-backend.mp4" title="Title"></video> -->
+
+
+https://github.com/user-attachments/assets/653c2257-96f7-49ac-8b4a-c0c5a3d2889a
+
 

@@ -51,11 +51,11 @@ This project documents the complete journey of designing, building, and deployin
 
 ## Architecture Project
 
-Within this microservice architecture, the entire functionality is split in independent deployable module which communicate with each other through API’s(RESTful web services)
+The system is split into independent deployable microservices that communicate via REST APIs, registered through Eureka, and exposed externally through an AWS Application Load Balancer + Ingress.
 
----
+> Architecture diagram
 
-## Repository Structure
+![app architecture](images/app_architecture.svg)
 
 ---
 

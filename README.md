@@ -7,8 +7,10 @@
 ![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)
 ![ArgoCD](https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white)
 
-> End-to-end implementation of a production-grade microservices system from building Spring Boot services and an Angular frontend, to deploying on AWS EKS with a full GitOps pipeline powered by ArgoCD.
-> This repository is a learning / implementation walkthrough of the full system.
+> End-to-end implementation of a production-grade microservices system from building Spring Boot services and an Angular frontend, to deploying on AWS EKS with a full GitOps pipeline powered by ArgoCD.  
+
+> This repository is a learning / implementation walkthrough of the full system. 
+ 
 > For production-ready version, see: https://github.com/Oussama-lasri/Spring-Boot-Microservices-Full-Stack-Kubernetes-CI-CD-AWS
 
 ---

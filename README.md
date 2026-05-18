@@ -1800,6 +1800,7 @@ This part = runs on every commit
     To run sonar in local and push report in sonar dashboard :
     `mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://replace-with-your-proper-EC2-instance-URL:9000/ -Dsonar.token=SonareQube-token`
 
+    ![SonarQube Results](images/sonarqube/results-dashboard.png)
    This command is used within Jenkins to run the build, execute tests, and send the code analysis results to SonarQube. After execution, you can view important metrics such as code coverage, bugs, code smells, and duplications directly in the SonarQube dashboard, accessible via your EC2 public IP (e.g., http://<EC2-IP>:9000). With the proper configuration of the JaCoCo plugin, a coverage report is automatically generated during test execution and integrated into SonarQube, allowing detailed visualization of code quality. Initially, this command is run locally to validate that tests and analysis are working correctly, and the results are verified in the SonarQube UI. Once confirmed, the same process is integrated into a CI/CD pipeline to enable full automation of code quality checks on every commit.
 
 - **Jenkins**

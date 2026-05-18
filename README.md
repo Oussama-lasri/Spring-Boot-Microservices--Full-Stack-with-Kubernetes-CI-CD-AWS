@@ -65,7 +65,7 @@ The system is split into independent deployable microservices that communicate v
 
 ## Microservices
 
-All microservices share the same core stack we create simple microservices : **Java 17 · Spring Boot 4.0.1 · Spring Data JPA · MySQL/MangoDB · MapStruct · Lombok · Eureka  · Docker**
+All microservices share the same core stack we create simple microservices : **Java 17 · Spring Boot · Spring Data JPA · MySQL/MangoDB · MapStruct · Lombok · Eureka  · Docker**
 with Web MVC Architecture :
 
 - Controller layer
@@ -85,16 +85,7 @@ Central discovery server. All microservices register here on startup and use Eur
 **Repo:** [food-delivery-user-info-service](https://github.com/Oussama-lasri/food-delivery-user-info-service) ·
 Manages user profiles and personal information.
 
-#### Tech stack used
 
-- Microservice architecture
-- Rest APIs
-- Java 17
-- MySql Relational DB as Datasource
-- Spring Boot
-- Lombok
-- Eureka Client
-- mapstruct
 
 ### Food Catalogue Service
 
@@ -104,16 +95,6 @@ Manages the food item catalogue categories, items, prices and availability.
 Food Catalogue Microservice is responsible toList all food items list of that particular Restaurant and
 Complete Restaurant Details
 
-#### Tech-stack used
-
-- Microservice architecture
-- Rest APIs
-- Java 17
-- MySql Relational DB as Datasource
-- Spring Boot
-- Lombok
-- Eureka Client
-- mapstruct
 
 ### Restaurant Listing Service
 
@@ -121,16 +102,7 @@ Complete Restaurant Details
 
 Handles restaurant data listing, filtering, and details.
 
-#### Tech-stack used
 
-- Microservice architecture
-- Rest APIs
-- Java 17
-- MySql Relational DB as Datasource
-- Spring Boot
-- Lombok
-- Eureka Client
-- mapstruct
 
 ### Restaurant Order Service
 
@@ -141,17 +113,6 @@ When we Hit OrderNow button,  the order details and user id reached backed, This
 - Food items list
 - Restaurant details
 - User Information
-
-#### Tech stack used
-
-- Microservice architecture
-- Rest APIs
-- Java 17
-- MongoDB DB as Datasource
-- Spring Boot
-- Lombok
-- Eureka Client
-- mapstruct
 
 ---
 
@@ -184,26 +145,33 @@ Push image to DockerHub : `docker push user-name/app-name:0.0.1`
 
 ### What is Spring Boot profiling
 
-**Configuration Files**: Spring Boot allows you to define multiple configuration files, each associated with a specific profile. These files are typically named application-{profile}.properties or application-{profile}.yml, where {profile} is the name of the profile.
-
-**Application Properties**: Inside each profile-specific configuration file, you can specify different properties based on your requirements. These properties can include database connection details, logging settings, cache configurations, and any other application-specific configurations.
-
-**Activating Profiles**: You can activate a specific profile by setting the spring.profiles.active property. This can be done in various ways, such as by setting an environment variable, using the -D flag when running the application, or programmatically in code.
-For example, to activate the development profile, you can set `spring.profiles.active=development`.
+Spring Boot profiling is a feature that allows developers to configure and customize their application's behavior based on different runtime environments
 
 ### How profiling works in Spring Boot
 
-Configuration Files: Spring Boot allows you to define multiple configuration files, each associated with a specific profile. These files are typically named a`pplication-{profile}.properties` or `application-{profile}.yml`, where {profile} is the name of the profile.  ![alt text](images/profiling.png)
+**Configuration Files**: Spring Boot allows you to define multiple configuration files, each associated with a specific profile. These files are typically named `application-{profile}.properties` or `application-{profile}.yml`, where {profile} is the name of the profile.  
+![alt text](images/profiling.png)  
 
-Application Properties: Inside each profile-specific configuration file, you can specify different properties based on your requirements. These properties can include database connection details, logging settings, cache configurations, and any other application-specific configurations.
+**Application Properties**: Inside each profile-specific configuration file, you can specify different properties based on your requirements. These properties can include database connection details, logging settings, cache configurations, and any other application-specific configurations.
 
-Activating Profiles: You can activate a specific profile by setting the `spring.profiles.active` property. This can be done in various ways, such as by setting an environment variable, using the `-D` flag when running the application, or programmatically in code.
-For example, to activate the development profile, you can set `spring.profiles.active=development`
+**Activating Profiles**: You can activate a specific profile by setting the `spring.profiles.active` property. This can be done in various ways, such as by setting an environment variable, using the `-D` flag when running the application, or programmatically in code.
+For example, to activate the development profile, you can set `spring.profiles.active=dev`
 
 e.g. :
 
-```
+```yaml
+server:
+  port: 9091
 
+spring:
+  application:
+    name: NAME-SERVICE
+  profiles:
+        active: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 ```
 
 ## Kubernetes
